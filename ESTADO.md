@@ -45,11 +45,11 @@
 
 ---
 
-## ⚡ Próximos 3 pasos inmediatos
+## ⚡ Próximos 3 pasos inmediatos (Instrucciones para Antigravity 2.0)
 
-1. **Mauro sube los documentos regulatorios a NotebookLM** — y configura las variables de entorno en Supabase.
-2. **Desplegar base de datos inicial en Supabase** — ejecutando las migraciones SQL.
-3. **Planificar e iniciar Fase 2 (Evidencias)** — diseñar el esquema para carga de documentos.
+1. **Diseñar el plan de la Fase 2 (Evidencias)**: Crear `implementation_plan.md` con los detalles técnicos del repositorio de documentos (Storage buckets, base de datos, API, frontend upload) y plantear todas las preguntas de diseño (Open Questions) en el documento para Mauro.
+2. **Realizar entrevista de alineación (`/grill-me`)**: Iniciar una entrevista interactiva con Mauro para responder todas las preguntas del plan de la Fase 2 de una sola vez.
+3. **Ejecutar e integrar de forma autónoma**: Una vez aprobado el plan, codificar backend y frontend, y usar el navegador automatizado para testear visualmente la carga y estado de documentos antes de entregar la fase.
 
 ---
 

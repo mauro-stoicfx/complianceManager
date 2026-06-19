@@ -158,5 +158,16 @@ FOR UPDATE USING (
 
 ---
 
+## Decisiones de Gestión y Transición (Handover)
+
+### Transición a Antigravity 2.0 y Flujo de Trabajo
+**Decisión:** El desarrollo continuará en la versión Antigravity 2.0 para dotar al agente de mayor autonomía en las siguientes fases.
+**Flujo operativo establecido:**
+1. **Lectura obligatoria:** Antigravity 2.0 leerá `ESTADO.md`, `Memoria.md` y `RULES.md` en su arranque.
+2. **Definición de plan e interrogatorio (`/grill-me`):** Para la Fase 2 (Evidencias), el agente diseñará primero el `implementation_plan.md` listando todas las dudas sobre el bucket de Storage, flujos de aprobación y variables de entorno como *Open Questions*. Acto seguido, utilizará el comando `/grill-me` para entrevistar a Mauro y resolverlas juntas en una sola sesión.
+3. **Ejecución y pruebas:** Con el plan aprobado, el agente implementará de manera autónoma y validará la interfaz y el backend mediante navegación automatizada por navegador (browser subagent) antes de dar por completado el objetivo.
+
+---
+
 *Seed inicial creado: 18 de junio de 2026 — Perplexity Computer*
-*Antigravity actualiza este archivo con cada decisión técnica relevante*
+*Última edición (Agrupación colapsable y Handover): 19 de junio de 2026 — Antigravity (v1.1.0)*
