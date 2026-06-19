@@ -79,7 +79,7 @@
 
 ## Control de versiones — GitHub
 
-- **Repositorio del proyecto:** [complianceManager](https://github.com/mauro-stoicfx/complianceManager.git)
+- **Repositorio del proyecto:** [ComplianceManagerTool](https://github.com/mauro-stoicfx/ComplianceManagerTool.git)
 - **Branch principal:** `main` (siempre deployable)
 - **Branch de desarrollo:** `develop`
 - **Feature branches:** `feature/nombre-de-feature`
