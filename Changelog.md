@@ -8,6 +8,18 @@
 
 ---
 
+## [v1.1.0] — 2026-06-19
+### Added
+- **Universo Regulatorio Agrupado:** Implementada la agrupación de controles por dominio (D1 a D8) en la tabla principal con cabeceras dinámicas y soporte para expandir/colapsar secciones de manera independiente.
+- **Estadísticas de Dominio:** Muestra de manera dinámica en la cabecera de cada dominio el total de controles y la madurez CMMI promedio para dicho grupo.
+- **Visualización de Versión:** Se muestra la etiqueta de la versión activa (`v1.1.0`) en la cabecera principal del sistema.
+- **Backup Automatizado:** Integración de la autenticación mediante GitHub Personal Access Token (PAT) en el flujo Git local para posibilitar resguardos automáticos en el repositorio `complianceManager`.
+
+### Fixed
+- Corrección de un error de sintaxis en `src/controls_data.ts` (uso de `None` en lugar de `null` en el control `D3-F05`), el cual causaba pantalla en blanco al cargar la aplicación.
+
+---
+
 ## [v1.0.0] — 2026-06-19
 ### Added
 - Inicialización del proyecto Frontend con Vite, React, TypeScript y Tailwind CSS.

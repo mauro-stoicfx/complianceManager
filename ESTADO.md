@@ -3,7 +3,7 @@
 
 > Este archivo se actualiza al final de cada sesión de trabajo.
 > Es el primer archivo que Mauro lee al retomar el proyecto.
-> Última actualización: 18 de junio de 2026
+> Última actualización: 19 de junio de 2026
 
 ---
 
@@ -12,7 +12,7 @@
 | Ambiente | Versión | Estado |
 |---|---|---|
 | Producción | — | No deployado aún |
-| Desarrollo | v0.1.0 — Fase de diseño | En curso |
+| Desarrollo | v1.1.0 — MVP con agrupaciones colapsables | En curso |
 
 ---
 
@@ -31,12 +31,14 @@
 - [x] Todos los archivos MD del proyecto creados y estructurados
 - [x] 6 documentos regulatorios oficiales descargados (FAIS Act, BN194, Securities Act, Financial Services Act, FIAMLA Regs, SEM Capital Rules)
 - [x] Arquitectura de archivos MD estandarizada (ARQUITECTURA_MD.md)
+- [x] **Fase 1 MVP:** Estructura de controles, base de datos seed, API FastAPI, Dashboard con radar y Calendario.
+- [x] **Agrupación colapsable (v1.1.0):** Sección expandible/colapsable por dominio (D1-D8) en la tabla del Universo con total de controles y madurez promedio dinámica en cabecera.
+- [x] **Backup automático:** Configuración del repositorio remoto git con Token de Acceso Personal para resguardos desatendidos.
 
 ---
 
 ## 🔴 Pendiente / En progreso
 
-- [x] **Fase 1 MVP:** Completado en su totalidad (Estructura de controles, base de datos seed, API FastAPI, Dashboard con radar y Calendario).
 - [ ] **Fase 2 Evidencias:** Repositorio de documentos + flujo de aprobación (no iniciado).
 - [ ] Stack de Supabase + Vercel: pendiente de deploy en producción.
 - [ ] NotebookLM: documentos aún no subidos por Mauro.
@@ -45,9 +47,9 @@
 
 ## ⚡ Próximos 3 pasos inmediatos
 
-1. **Mauro inicia el servidor local** — para probar la interfaz web y el backend de forma local.
-2. **Mauro sube los documentos regulatorios a NotebookLM** — y configura las variables de entorno en Supabase.
-3. **Mauro crea el repositorio de GitHub** — para conectar los despliegues automáticos a Vercel.
+1. **Mauro sube los documentos regulatorios a NotebookLM** — y configura las variables de entorno en Supabase.
+2. **Desplegar base de datos inicial en Supabase** — ejecutando las migraciones SQL.
+3. **Planificar e iniciar Fase 2 (Evidencias)** — diseñar el esquema para carga de documentos.
 
 ---
 
@@ -56,7 +58,6 @@
 | Blocker | Descripción | Responsable |
 |---|---|---|
 | NotebookLM no configurado | Los documentos regulatorios no están subidos aún. El MCP de NotebookLM no puede usarse hasta que estén indexados. | Mauro |
-| GitHub no creado | No hay repositorio donde versionar el código | Mauro |
 
 ---
 

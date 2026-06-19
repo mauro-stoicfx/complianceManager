@@ -210,6 +210,16 @@ export default function App() {
   const [filterStatus, setFilterStatus] = useState<string>('All');
   const [searchTerm, setSearchTerm] = useState<string>('');
 
+  // Collapsed domains state (true = collapsed, false = expanded)
+  const [collapsedDomains, setCollapsedDomains] = useState<Record<string, boolean>>({});
+
+  const toggleDomainCollapse = (domainId: string) => {
+    setCollapsedDomains(prev => ({
+      ...prev,
+      [domainId]: !prev[domainId]
+    }));
+  };
+
   // Assessment edit form state
   const [editStatus, setEditStatus] = useState<'Compliant' | 'En progreso' | 'En riesgo' | 'Incumplido'>('En progreso');
   const [editMaturity, setEditMaturity] = useState<number>(1);
@@ -624,6 +634,7 @@ export default function App() {
             <div className="flex items-center gap-2">
               <span className="font-bold text-lg tracking-tight text-white">{t.title}</span>
               <span className="text-[10px] bg-blue-500/15 text-blue-400 px-2 py-0.5 rounded-full font-bold border border-blue-500/10 uppercase">Compliance</span>
+              <span className="text-[10px] text-gray-500 font-bold ml-1">v1.1.0</span>
             </div>
             <p className="text-xs text-gray-400">{t.subTitle}</p>
           </div>
@@ -926,66 +937,116 @@ export default function App() {
                       </td>
                     </tr>
                   ) : (
-                    filteredControls.map((c) => (
-                      <tr key={c.id} className="hover:bg-[#1C2841]/40 transition-colors">
-                        <td className="py-4 px-4 font-bold text-blue-400">{c.id}</td>
-                        <td className="py-4 px-4">
-                          <span className={`px-2 py-0.5 rounded text-[10px] font-bold border ${
-                            c.jurisdiction === 'FSCA' 
-                              ? 'bg-purple-500/10 text-purple-400 border-purple-500/25' 
-                              : c.jurisdiction === 'FSC Mauritius'
-                              ? 'bg-blue-500/10 text-blue-400 border-blue-500/25'
-                              : 'bg-emerald-500/10 text-emerald-400 border-emerald-500/25'
-                          }`}>
-                            {c.jurisdiction === 'FSCA' ? t.fsca : c.jurisdiction === 'FSC Mauritius' ? t.fsc : t.both}
-                          </span>
-                        </td>
-                        <td className="py-4 px-4">
-                          <div className="font-semibold text-white">{lang === 'es' ? c.description : c.descriptionEn}</div>
-                          <div className="text-[10px] text-gray-400 mt-1 line-clamp-1">
-                            {lang === 'es' ? 'Evidencia' : 'Evidence'}: {lang === 'es' ? c.required_evidence : c.required_evidenceEn}
-                          </div>
-                        </td>
-                        <td className="py-4 px-4 font-medium text-gray-400">{c.source_regulation}</td>
-                        <td className="py-4 px-4">
-                          <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold flex items-center w-max gap-1 ${
-                            c.status === 'Compliant' 
-                              ? 'bg-emerald-500/10 text-emerald-400' 
-                              : c.status === 'En progreso'
-                              ? 'bg-blue-500/10 text-blue-400'
-                              : c.status === 'En riesgo'
-                              ? 'bg-amber-500/10 text-amber-400'
-                              : 'bg-red-500/10 text-red-400'
-                          }`}>
-                            <span className="w-1.5 h-1.5 rounded-full bg-current" />
-                            {c.status === 'En progreso' ? t.inProgress : c.status === 'En riesgo' ? t.atRiskStatus : c.status === 'Incumplido' ? t.nonCompliant : t.compliant}
-                          </span>
-                        </td>
-                        <td className="py-4 px-4">
-                          <div className="flex items-center gap-1.5">
-                            <div className="flex gap-0.5">
-                              {[1, 2, 3, 4, 5].map((star) => (
-                                <span 
-                                  key={star} 
-                                  className={`w-1.5 h-3 rounded-sm ${
-                                    star <= c.maturity_level ? 'bg-blue-500' : 'bg-gray-800'
-                                  }`} 
-                                />
-                              ))}
-                            </div>
-                            <span className="font-bold text-gray-200">Lvl {c.maturity_level}</span>
-                          </div>
-                        </td>
-                        <td className="py-4 px-4 text-right">
-                          <button
-                            onClick={() => handleOpenAssess(c)}
-                            className="bg-[#0B0F19] hover:bg-blue-600 border border-gray-800 hover:border-blue-500 text-gray-300 hover:text-white px-3 py-1.5 rounded-md text-[11px] font-semibold transition-all active:scale-95"
+                    DOMAIN_IDS.map(domainId => {
+                      const domainControls = filteredControls.filter(c => c.domain.startsWith(domainId));
+                      if (domainControls.length === 0) return null;
+
+                      // Calculate average maturity for these controls
+                      const sum = domainControls.reduce((acc, c) => acc + c.maturity_level, 0);
+                      const avgMaturity = (sum / domainControls.length).toFixed(1);
+                      
+                      // Get Domain Display Name
+                      let domainName = "";
+                      if (domainId === 'D1') domainName = lang === 'es' ? 'D1 — Licenciamiento y gobierno corporativo' : 'D1 — Licensing & Corporate Governance';
+                      else if (domainId === 'D2') domainName = lang === 'es' ? 'D2 — Solidez financiera y capital' : 'D2 — Financial Soundness & Capital';
+                      else if (domainId === 'D3') domainName = lang === 'es' ? 'D3 — KYC / AML / CFT' : 'D3 — KYC / AML / CFT';
+                      else if (domainId === 'D4') domainName = lang === 'es' ? 'D4 — Protección al cliente' : 'D4 — Client Protection';
+                      else if (domainId === 'D5') domainName = lang === 'es' ? 'D5 — Formación del equipo' : 'D5 — Staff Training & Competence';
+                      else if (domainId === 'D6') domainName = lang === 'es' ? 'D6 — Reportes periódicos' : 'D6 — Regulatory Reporting';
+                      else if (domainId === 'D7') domainName = lang === 'es' ? 'D7 — Tecnología y ciberseguridad' : 'D7 — Technology & Cybersecurity';
+                      else if (domainId === 'D8') domainName = lang === 'es' ? 'D8 — Vigilancia normativa' : 'D8 — Regulatory Change Monitoring';
+
+                      const isCollapsed = !!collapsedDomains[domainId];
+
+                      return (
+                        <React.Fragment key={domainId}>
+                          {/* Group Header Row */}
+                          <tr 
+                            onClick={() => toggleDomainCollapse(domainId)}
+                            className="bg-[#151D30]/90 border-b border-gray-800 hover:bg-[#1E293B] cursor-pointer transition-colors select-none"
                           >
-                            {t.evalButton}
-                          </button>
-                        </td>
-                      </tr>
-                    ))
+                            <td colSpan={7} className="py-3 px-4 font-bold text-sm text-gray-200">
+                              <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-2">
+                                  <span className={`transition-transform duration-200 transform ${isCollapsed ? '-rotate-90' : ''}`}>
+                                    <ChevronDown className="w-4 h-4 text-blue-400" />
+                                  </span>
+                                  <span>{domainName}</span>
+                                  <span className="text-xs text-gray-400 font-normal">
+                                    ({domainControls.length} {lang === 'es' ? 'controles' : 'controls'})
+                                  </span>
+                                </div>
+                                <div className="text-xs font-semibold bg-blue-500/10 text-blue-400 px-3 py-1 rounded-full border border-blue-500/10">
+                                  {lang === 'es' ? 'Madurez promedio' : 'Average maturity'}: {avgMaturity}
+                                </div>
+                              </div>
+                            </td>
+                          </tr>
+
+                          {/* Individual Controls Rows */}
+                          {!isCollapsed && domainControls.map((c) => (
+                            <tr key={c.id} className="hover:bg-[#1C2841]/40 transition-colors">
+                              <td className="py-4 px-4 font-bold text-blue-400">{c.id}</td>
+                              <td className="py-4 px-4">
+                                <span className={`px-2 py-0.5 rounded text-[10px] font-bold border ${
+                                  c.jurisdiction === 'FSCA' 
+                                    ? 'bg-purple-500/10 text-purple-400 border-purple-500/25' 
+                                    : c.jurisdiction === 'FSC Mauritius'
+                                    ? 'bg-blue-500/10 text-blue-400 border-blue-500/25'
+                                    : 'bg-emerald-500/10 text-emerald-400 border-emerald-500/25'
+                                }`}>
+                                  {c.jurisdiction === 'FSCA' ? t.fsca : c.jurisdiction === 'FSC Mauritius' ? t.fsc : t.both}
+                                </span>
+                              </td>
+                              <td className="py-4 px-4">
+                                <div className="font-semibold text-white">{lang === 'es' ? c.description : c.descriptionEn}</div>
+                                <div className="text-[10px] text-gray-400 mt-1 line-clamp-1">
+                                  {lang === 'es' ? 'Evidencia' : 'Evidence'}: {lang === 'es' ? c.required_evidence : c.required_evidenceEn}
+                                </div>
+                              </td>
+                              <td className="py-4 px-4 font-medium text-gray-400">{c.source_regulation}</td>
+                              <td className="py-4 px-4">
+                                <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold flex items-center w-max gap-1 ${
+                                  c.status === 'Compliant' 
+                                    ? 'bg-emerald-500/10 text-emerald-400' 
+                                    : c.status === 'En progreso'
+                                    ? 'bg-blue-500/10 text-blue-400'
+                                    : c.status === 'En riesgo'
+                                    ? 'bg-amber-500/10 text-amber-400'
+                                    : 'bg-red-500/10 text-red-400'
+                                }`}>
+                                  <span className="w-1.5 h-1.5 rounded-full bg-current" />
+                                  {c.status === 'En progreso' ? t.inProgress : c.status === 'En riesgo' ? t.atRiskStatus : c.status === 'Incumplido' ? t.nonCompliant : t.compliant}
+                                </span>
+                              </td>
+                              <td className="py-4 px-4">
+                                <div className="flex items-center gap-1.5">
+                                  <div className="flex gap-0.5">
+                                    {[1, 2, 3, 4, 5].map((star) => (
+                                      <span 
+                                        key={star} 
+                                        className={`w-1.5 h-3 rounded-sm ${
+                                          star <= c.maturity_level ? 'bg-blue-500' : 'bg-gray-800'
+                                        }`} 
+                                      />
+                                    ))}
+                                  </div>
+                                  <span className="font-bold text-gray-200">Lvl {c.maturity_level}</span>
+                                </div>
+                              </td>
+                              <td className="py-4 px-4 text-right">
+                                <button
+                                  onClick={() => handleOpenAssess(c)}
+                                  className="bg-[#0B0F19] hover:bg-blue-600 border border-gray-800 hover:border-blue-500 text-gray-300 hover:text-white px-3 py-1.5 rounded-md text-[11px] font-semibold transition-all active:scale-95"
+                                >
+                                  {t.evalButton}
+                                </button>
+                              </td>
+                            </tr>
+                          ))}
+                        </React.Fragment>
+                      );
+                    })
                   )}
                 </tbody>
               </table>
