@@ -3,7 +3,7 @@
 
 > Este archivo se actualiza al final de cada sesión de trabajo.
 > Es el primer archivo que Mauro lee al retomar el proyecto.
-> Última actualización: 19 de junio de 2026
+> Última actualización: 20 de junio de 2026
 
 ---
 
@@ -11,8 +11,8 @@
 
 | Ambiente | Versión | Estado |
 |---|---|---|
-| Producción | — | No deployado aún |
-| Desarrollo | v1.3.0 — Inteligencia y Automatización (Fase 3) | ✅ Completado |
+| Producción | v1.4.0 — Madurez y Reportes (Fase 4) | ✅ Deployado |
+| Desarrollo | v1.4.0 — Madurez y Reportes (Fase 4) | ✅ Completado |
 
 ---
 
@@ -40,21 +40,20 @@
 - [x] **Backup automático:** Repositorio remoto Git con PAT configurado
 - [x] **Fase 2 Evidencias (v1.2.0):** Repositorio de documentos en Supabase Storage, flujo de revisión y aprobación, simulador de roles
 - [x] **Fase 3 Inteligencia (v1.3.0):** Monitor D8 automático de cambios normativos, alertas legislativas, impacto directo en Universo de Controles, envío de correos reales con Resend
+- [x] **Fase 4 Madurez y Reportes (v1.4.0):** Evaluación de madurez CMMI interactiva, heatmap, planes de acción automáticos y centro de reportes (exportación CSV e impresión PDF en A4).
 
 ---
 
 ## 🔴 Pendiente / En progreso
 
-- [ ] Stack de Supabase + Vercel: pendiente de deploy en producción
 - [ ] Supabase Storage real: evidencias aún en modo mock_storage local — pendiente conectar bucket real
 
 ---
 
-## ⚡ Próximos pasos inmediatos (Fase 4)
+## ⚡ Próximos pasos inmediatos (Fase de producción final)
 
-1. **Maturity Assessment interactivo** — pantallas dedicadas para auditoría periódica de niveles CMMI, heatmap current vs. target, plan de acción automático para controles en nivel 0 o 1 de dominios críticos
-2. **Generación de Reportes PDF/Excel** — exportar reportes del estado actual de compliance y madurez para auditores
-3. **Deploy final** — configurar variables de entorno y lanzar producción en Vercel + conectar Supabase Storage real
+1. **Pruebas integrales de extremo a extremo** con los roles de usuario en el servidor desplegado.
+2. **Conectar Supabase Storage real** configurando políticas de almacenamiento en lugar del almacenamiento simulado local.
 
 ---
 
@@ -74,7 +73,7 @@ Ninguno activo al 19 de junio de 2026.
 | `ESTADO.md` | Este archivo | ✅ Listo |
 | `Memoria.md` | Decisiones técnicas | ✅ Listo |
 | `Contexto.md` | Conocimiento del dominio | ✅ Listo |
-| `Changelog.md` | Historial de versiones | ✅ Listo v1.3.0 |
+| `Changelog.md` | Historial de versiones | ✅ Listo v1.4.0 |
 | `OportunidadesDeMejora.md` | Backlog futuro (12 ítems) | ✅ Listo |
 | `BROKERSTIER.md` | Benchmark competitivo | ✅ Listo |
 | `WORTHITORNOT.md` | Beneficios del sistema | ✅ Listo (reescrito 19-jun) |
@@ -86,4 +85,4 @@ Ninguno activo al 19 de junio de 2026.
 
 ---
 
-*Actualizado: 19 de junio de 2026 — fin de Fase 3 con Perplexity Computer + Antigravity*
+*Actualizado: 20 de junio de 2026 — fin de Fase 4 con Antigravity*

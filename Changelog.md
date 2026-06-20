@@ -8,6 +8,15 @@
 
 ---
 
+## [v1.4.0] — 2026-06-20
+### Added
+- **Evaluación de Madurez CMMI (Fase 4):** Creada la nueva pestaña "Madurez CMMI" interactiva que despliega un heatmap de distribución de madurez (niveles 0-5) sobre los 8 dominios de control regulados.
+- **Acceso Directo a Auditorías:** Habilitado el panel de auditoría directa para que el Administrador/Oficial de Compliance modifique el nivel de madurez, madurez objetivo, justificación de auditoría y notas internas por control.
+- **Planes de Acción Correctiva:** Motor automatizado que genera recomendaciones de acción correctiva en tiempo real para controles con una brecha de madurez (`maturity_level < maturity_target`).
+- **Centro de Reportes y Auditorías (Fase 4):** Creada la pestaña "Informes" que unifica la exportación del inventario general a formato CSV y la generación de reportes formales PDF a través de hojas de estilo de impresión `@media print` con optimizaciones A4.
+
+---
+
 ## [v1.3.0] — 2026-06-20
 ### Added
 - **Módulo de Inteligencia Regulatoria (Fase 3 - D8):** Implementada la pestaña interactiva "Inteligencia D8" en el frontend para monitorear novedades de FSCA y FSC Mauritius.
