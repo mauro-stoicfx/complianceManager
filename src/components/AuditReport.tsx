@@ -9,6 +9,28 @@ interface AuditReportProps {
 
 export default function AuditReport({ lang, controls, domainMaturity }: AuditReportProps) {
   
+  const getStatusLabel = (status: string) => {
+    if (lang === 'es') return status;
+    const statusLabels: Record<string, string> = {
+      'Compliant': 'Compliant',
+      'En progreso': 'In Progress',
+      'En riesgo': 'At Risk',
+      'Incumplido': 'Non-compliant'
+    };
+    return statusLabels[status] || status;
+  };
+
+  const getJurisdictionLabel = (j: string) => {
+    if (lang === 'es') return j;
+    const jLabels: Record<string, string> = {
+      'Ambas': 'Both',
+      'Both': 'Both',
+      'FSCA': 'FSCA',
+      'FSC Mauritius': 'FSC Mauritius'
+    };
+    return jLabels[j] || j;
+  };
+
   // Calculate general statistics
   const totalControls = controls.length;
   const compliantCount = controls.filter(c => c.status === 'Compliant').length;
@@ -42,14 +64,14 @@ export default function AuditReport({ lang, controls, domainMaturity }: AuditRep
     const rows = controls.map(c => [
       c.id,
       c.domain,
-      c.jurisdiction,
+      getJurisdictionLabel(c.jurisdiction),
       c.source_regulation,
       lang === 'es' ? c.description : c.descriptionEn,
-      c.frequency,
+      lang === 'es' ? c.frequency : (c.frequencyEn || c.frequency),
       c.next_due_date || 'N/A',
       c.responsible_person,
       lang === 'es' ? c.required_evidence : c.required_evidenceEn,
-      c.status,
+      getStatusLabel(c.status),
       c.maturity_level.toString(),
       c.maturity_target.toString(),
       lang === 'es' ? c.maturity_justification : c.maturity_justificationEn,
@@ -290,11 +312,11 @@ export default function AuditReport({ lang, controls, domainMaturity }: AuditRep
                     return (
                       <tr key={c.id} className="hover:bg-white/5 print:hover:bg-transparent">
                         <td className="py-2 font-bold">{c.id}</td>
-                        <td className="py-2">{c.jurisdiction}</td>
+                        <td className="py-2">{getJurisdictionLabel(c.jurisdiction)}</td>
                         <td className="py-2">{c.source_regulation}</td>
                         <td className="py-2 leading-relaxed">{lang === 'es' ? c.description : c.descriptionEn}</td>
-                        <td className="py-2">{c.frequency}</td>
-                        <td className={`py-2 text-center ${statusBg}`}>{c.status}</td>
+                        <td className="py-2">{lang === 'es' ? c.frequency : (c.frequencyEn || c.frequency)}</td>
+                        <td className={`py-2 text-center ${statusBg}`}>{getStatusLabel(c.status)}</td>
                         <td className="py-2 text-center font-bold">{c.maturity_level}</td>
                       </tr>
                     );

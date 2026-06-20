@@ -8,6 +8,13 @@
 
 ---
 
+## [v1.4.6] — 2026-06-20
+### Fixed
+- **Traducción de Datos Dinámicos en Reportes:** Implementadas funciones helper de mapeo (`getStatusLabel` y `getJurisdictionLabel`) y la lógica de traducción correspondiente para las columnas de frecuencia (`c.frequencyEn`), jurisdicción y estado en el archivo [AuditReport.tsx](file:///c:/Users/mauro/OneDrive/S/STOICFX/Compliance%20Project/StoicFX%20Compliance%20Manager/src/components/AuditReport.tsx). Esto asegura que al alternar el idioma de la aplicación a inglés, todos los textos y datos de las tablas de informes (tanto en vista de impresión PDF como en la exportación CSV) se traduzcan correctamente en lugar de mostrarse en español.
+- **Incremento de Versión Semántica:** Bump de la versión a `1.4.6` en [package.json](file:///c:/Users/mauro/OneDrive/S/STOICFX/Compliance%20Project/StoicFX%20Compliance%20Manager/package.json), [App.tsx](file:///c:/Users/mauro/OneDrive/S/STOICFX/Compliance%20Project/StoicFX%20Compliance%20Manager/src/App.tsx) y [ESTADO.md](file:///c:/Users/mauro/OneDrive/S/STOICFX/Compliance%20Project/StoicFX%20Compliance%20Manager/ESTADO.md).
+
+---
+
 ## [v1.4.5] — 2026-06-20
 ### Fixed
 - **Dependencia de Carga de Archivos (python-multipart):** Añadido `python-multipart` a [requirements.txt](file:///c:/Users/mauro/OneDrive/S/STOICFX/Compliance%20Project/StoicFX%20Compliance%20Manager/api/requirements.txt). Esto resuelve el error en tiempo de ejecución (`RuntimeError: Form data requires "python-multipart" to be installed`) gatillado por FastAPI al compilar la ruta de subida de evidencias en el entorno serverless de Vercel.

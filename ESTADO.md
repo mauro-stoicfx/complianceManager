@@ -11,8 +11,8 @@
 
 | Ambiente | Versión | Estado |
 |---|---|---|
-| Producción | v1.4.5 — Librería de Carga de Formularios python-multipart | ✅ Deployado |
-| Desarrollo | v1.4.5 — Librería de Carga de Formularios python-multipart | ✅ Completado |
+| Producción | v1.4.6 — Traducción de Reportes en Inglés | ✅ Deployado |
+| Desarrollo | v1.4.6 — Traducción de Reportes en Inglés | ✅ Completado |
 
 ---
 
