@@ -3,7 +3,7 @@
 
 > Este archivo se actualiza al final de cada sesión de trabajo.
 > Es el primer archivo que Mauro lee al retomar el proyecto.
-> Última actualización: 20 de junio de 2026
+> Última actualización: 19 de junio de 2026
 
 ---
 
@@ -11,8 +11,8 @@
 
 | Ambiente | Versión | Estado |
 |---|---|---|
-| Producción | v1.4.6 — Traducción de Reportes en Inglés | ✅ Deployado |
-| Desarrollo | v1.4.6 — Traducción de Reportes en Inglés | ✅ Completado |
+| Producción | v1.4.7 — Actualización de Subtítulo e Interfaz | ✅ Deployado en https://compliance-manager-pi.vercel.app |
+| Desarrollo | v1.4.7 — Actualización de Subtítulo e Interfaz | ✅ Completado |
 
 ---
 
@@ -40,20 +40,22 @@
 - [x] **Backup automático:** Repositorio remoto Git con PAT configurado
 - [x] **Fase 2 Evidencias (v1.2.0):** Repositorio de documentos en Supabase Storage, flujo de revisión y aprobación, simulador de roles
 - [x] **Fase 3 Inteligencia (v1.3.0):** Monitor D8 automático de cambios normativos, alertas legislativas, impacto directo en Universo de Controles, envío de correos reales con Resend
-- [x] **Fase 4 Madurez y Reportes (v1.4.0):** Evaluación de madurez CMMI interactiva, heatmap, planes de acción automáticos y centro de reportes (exportación CSV e impresión PDF en A4).
 
 ---
 
 ## 🔴 Pendiente / En progreso
 
-- [x] Conectar Supabase Storage real (bucket 'compliance-evidence' y variables cargadas desde .env.local)
+- [x] Deploy en Vercel: https://compliance-manager-pi.vercel.app
+- [x] Supabase Storage real conectado (bucket `compliance-evidence`)
+- [x] Variables de entorno configuradas en Vercel (SUPABASE_URL, SUPABASE_KEY, RESEND_API_KEY)
 
 ---
 
-## ⚡ Próximos pasos inmediatos (Fase de producción final)
+## ⚡ Próximos pasos inmediatos
 
-1. **Pruebas integrales de extremo a extremo** con los roles de usuario en el servidor desplegado.
-2. **Conectar Supabase Storage real** configurando políticas de almacenamiento en lugar del almacenamiento simulado local.
+1. **Sesión de diagnóstico con el equipo** — usar `SesionDiagnostico.md` antes de presentar a Mike
+2. **Presentación a Mike (CEO)** — demo en https://compliance-manager-pi.vercel.app + WORTHITORNOT.md como respaldo
+3. **Migración a cuentas corporativas** — cuando Mike apruebe, seguir checklist en `SETUPGUIDE.md`
 
 ---
 
@@ -73,11 +75,12 @@ Ninguno activo al 19 de junio de 2026.
 | `ESTADO.md` | Este archivo | ✅ Listo |
 | `Memoria.md` | Decisiones técnicas | ✅ Listo |
 | `Contexto.md` | Conocimiento del dominio | ✅ Listo |
-| `Changelog.md` | Historial de versiones | ✅ Listo v1.4.0 |
+| `Changelog.md` | Historial de versiones | ✅ Listo v1.3.0 |
 | `OportunidadesDeMejora.md` | Backlog futuro (12 ítems) | ✅ Listo |
 | `BROKERSTIER.md` | Benchmark competitivo | ✅ Listo |
 | `WORTHITORNOT.md` | Beneficios del sistema | ✅ Listo (reescrito 19-jun) |
 | `ARQUITECTURA_MD.md` | Guía de arquitectura MD | ✅ Listo |
+| `SETUPGUIDE.md` | Guía de instalación y configuración de infraestructura | ✅ Listo |
 | `SesionDiagnostico.md` | Guía para sesión de diagnóstico con el equipo antes de presentar a Mike | ✅ Listo |
 | `RegulacionNotebook.md` | Fuentes para NotebookLM — regulación | ✅ Listo |
 | `BrokerstiersNotebook.md` | Fuentes para NotebookLM — benchmark | ✅ Listo |
@@ -85,4 +88,4 @@ Ninguno activo al 19 de junio de 2026.
 
 ---
 
-*Actualizado: 20 de junio de 2026 — fin de Fase 4 con Antigravity*
+*Actualizado: 20 de junio de 2026 — sistema en producción v1.4.5. Todas las fases completadas.*

@@ -8,6 +8,13 @@
 
 ---
 
+## [v1.4.7] — 2026-06-20
+### Changed
+- **Actualización de Subtítulo en Cabecera:** Reemplazado el subtítulo *"FSCA & FSC Mauritius Regulatory Universe"* por *"Compliance Management System"* (en inglés) y *"Sistema de Gestión de Compliance"* (en español) en el archivo de traducción de [App.tsx](file:///c:/Users/mauro/OneDrive/S/STOICFX/Compliance%20Project/StoicFX%20Compliance%20Manager/src/App.tsx).
+- **Incremento de Versión Semántica:** Bump de la versión a `1.4.7` en [package.json](file:///c:/Users/mauro/OneDrive/S/STOICFX/Compliance%20Project/StoicFX%20Compliance%20Manager/package.json), [App.tsx](file:///c:/Users/mauro/OneDrive/S/STOICFX/Compliance%20Project/StoicFX%20Compliance%20Manager/src/App.tsx) y [ESTADO.md](file:///c:/Users/mauro/OneDrive/S/STOICFX/Compliance%20Project/StoicFX%20Compliance%20Manager/ESTADO.md).
+
+---
+
 ## [v1.4.6] — 2026-06-20
 ### Fixed
 - **Traducción de Datos Dinámicos en Reportes:** Implementadas funciones helper de mapeo (`getStatusLabel` y `getJurisdictionLabel`) y la lógica de traducción correspondiente para las columnas de frecuencia (`c.frequencyEn`), jurisdicción y estado en el archivo [AuditReport.tsx](file:///c:/Users/mauro/OneDrive/S/STOICFX/Compliance%20Project/StoicFX%20Compliance%20Manager/src/components/AuditReport.tsx). Esto asegura que al alternar el idioma de la aplicación a inglés, todos los textos y datos de las tablas de informes (tanto en vista de impresión PDF como en la exportación CSV) se traduzcan correctamente en lugar de mostrarse en español.
