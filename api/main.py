@@ -8,6 +8,15 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from supabase import create_client, Client
 
+# Load environment variables from .env.local for local development fallback
+try:
+    from dotenv import load_dotenv
+    dotenv_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), ".env.local")
+    if os.path.exists(dotenv_path):
+        load_dotenv(dotenv_path=dotenv_path)
+except ImportError:
+    pass
+
 # Mock storage directory for local fallback
 MOCK_STORAGE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "mock_storage")
 if not os.path.exists(MOCK_STORAGE_DIR):

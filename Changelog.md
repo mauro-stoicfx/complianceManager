@@ -14,6 +14,7 @@
 - **Acceso Directo a Auditorías:** Habilitado el panel de auditoría directa para que el Administrador/Oficial de Compliance modifique el nivel de madurez, madurez objetivo, justificación de auditoría y notas internas por control.
 - **Planes de Acción Correctiva:** Motor automatizado que genera recomendaciones de acción correctiva en tiempo real para controles con una brecha de madurez (`maturity_level < maturity_target`).
 - **Centro de Reportes y Auditorías (Fase 4):** Creada la pestaña "Informes" que unifica la exportación del inventario general a formato CSV y la generación de reportes formales PDF a través de hojas de estilo de impresión `@media print` con optimizaciones A4.
+- **Conexión de Almacenamiento Real (Supabase Storage):** Verificada la conexión al bucket `compliance-evidence` y la base de datos real. Modificado [main.py](file:///c:/Users/mauro/OneDrive/S/STOICFX/Compliance%20Project/StoicFX%20Compliance%20Manager/api/main.py) para cargar de forma automática las variables de entorno de [.env.local](file:///c:/Users/mauro/OneDrive/S/STOICFX/Compliance%20Project/StoicFX%20Compliance%20Manager/.env.local) usando `python-dotenv` en desarrollo local.
 
 ---
 

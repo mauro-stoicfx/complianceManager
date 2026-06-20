@@ -46,7 +46,7 @@
 
 ## 🔴 Pendiente / En progreso
 
-- [ ] Supabase Storage real: evidencias aún en modo mock_storage local — pendiente conectar bucket real
+- [x] Conectar Supabase Storage real (bucket 'compliance-evidence' y variables cargadas desde .env.local)
 
 ---
 
