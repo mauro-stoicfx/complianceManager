@@ -26,10 +26,12 @@ try:
 except ImportError:
     pass
 
-# Mock storage directory for local fallback
-MOCK_STORAGE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "mock_storage")
-if not os.path.exists(MOCK_STORAGE_DIR):
-    os.makedirs(MOCK_STORAGE_DIR)
+# Mock storage directory for local fallback (use /tmp under serverless)
+MOCK_STORAGE_DIR = '/tmp/mock_storage'
+try:
+    os.makedirs(MOCK_STORAGE_DIR, exist_ok=True)
+except OSError:
+    MOCK_STORAGE_DIR = None
 
 # In-memory database for evidence files when Supabase is not connected
 IN_MEMORY_EVIDENCE = []
@@ -231,6 +233,11 @@ async def upload_evidence(
             print(f"Supabase upload error: {e}. Falling back to local storage.")
 
     # --- Local/in-memory fallback ---
+    if not MOCK_STORAGE_DIR:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Local mock storage is disabled because directory creation failed on serverless system."
+        )
     if not os.path.exists(MOCK_STORAGE_DIR):
         os.makedirs(MOCK_STORAGE_DIR)
     local_path = os.path.join(MOCK_STORAGE_DIR, safe_filename)
@@ -445,6 +452,11 @@ def download_evidence(evidence_id: str):
     if not evidence:
         raise HTTPException(status_code=404, detail="Evidence not found")
         
+    if not MOCK_STORAGE_DIR:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Local mock storage is disabled because directory creation failed on serverless system."
+        )
     file_path = os.path.join(MOCK_STORAGE_DIR, os.path.basename(evidence["file_path"]))
     if not os.path.exists(file_path):
         raise HTTPException(status_code=404, detail="File not found on disk")
