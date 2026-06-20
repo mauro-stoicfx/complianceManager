@@ -15,6 +15,7 @@
 - **Planes de Acción Correctiva:** Motor automatizado que genera recomendaciones de acción correctiva en tiempo real para controles con una brecha de madurez (`maturity_level < maturity_target`).
 - **Centro de Reportes y Auditorías (Fase 4):** Creada la pestaña "Informes" que unifica la exportación del inventario general a formato CSV y la generación de reportes formales PDF a través de hojas de estilo de impresión `@media print` con optimizaciones A4.
 - **Conexión de Almacenamiento Real (Supabase Storage):** Verificada la conexión al bucket `compliance-evidence` y la base de datos real. Modificado [main.py](file:///c:/Users/mauro/OneDrive/S/STOICFX/Compliance%20Project/StoicFX%20Compliance%20Manager/api/main.py) para cargar de forma automática las variables de entorno de [.env.local](file:///c:/Users/mauro/OneDrive/S/STOICFX/Compliance%20Project/StoicFX%20Compliance%20Manager/.env.local) usando `python-dotenv` en desarrollo local.
+- **Acordeones de Dominios Colapsados por Defecto:** Modificado el estado inicial en [App.tsx](file:///c:/Users/mauro/OneDrive/S/STOICFX/Compliance%20Project/StoicFX%20Compliance%20Manager/src/App.tsx) para que todos los dominios (D1-D8) en la vista de Universo Regulatorio se muestren consolidados (colapsados) de manera predeterminada al cargar la aplicación.
 
 ---
 

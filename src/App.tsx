@@ -219,7 +219,13 @@ export default function App() {
   const [searchTerm, setSearchTerm] = useState<string>('');
 
   // Collapsed domains state (true = collapsed, false = expanded)
-  const [collapsedDomains, setCollapsedDomains] = useState<Record<string, boolean>>({});
+  const [collapsedDomains, setCollapsedDomains] = useState<Record<string, boolean>>(() => {
+    const initial: Record<string, boolean> = {};
+    DOMAIN_IDS.forEach(id => {
+      initial[id] = true;
+    });
+    return initial;
+  });
 
   const toggleDomainCollapse = (domainId: string) => {
     setCollapsedDomains(prev => ({
