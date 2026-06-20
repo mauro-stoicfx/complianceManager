@@ -16,11 +16,15 @@ import {
   Sliders,
   Globe,
   Download,
-  UploadCloud
+  UploadCloud,
+  Award,
+  FileText
 } from 'lucide-react';
 
 import { Control, INITIAL_LOCAL_CONTROLS } from './controls_data';
 import EvidenceRepository from './components/EvidenceRepository';
+import MaturityAssessment from './components/MaturityAssessment';
+import AuditReport from './components/AuditReport';
 
 const API_BASE_URL = window.location.hostname === 'localhost' ? 'http://localhost:8000' : '';
 
@@ -194,7 +198,7 @@ export default function App() {
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
   const [apiOnline, setApiOnline] = useState(false);
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'universe' | 'calendar' | 'evidence' | 'intelligence'>('dashboard');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'universe' | 'calendar' | 'evidence' | 'intelligence' | 'maturity' | 'reports'>('dashboard');
 
   // Core compliance data states
   const [controls, setControls] = useState<Control[]>(INITIAL_LOCAL_CONTROLS);
@@ -724,6 +728,26 @@ export default function App() {
             {changes.filter(c => c.status === 'Unreviewed').length > 0 && (
               <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-red-500 rounded-full animate-pulse border border-[#0B0F19]" />
             )}
+          </button>
+          <button
+            onClick={() => setActiveTab('maturity')}
+            className={`flex items-center gap-2 px-4 py-2 text-xs font-semibold rounded-md transition-all ${
+              activeTab === 'maturity' 
+                ? 'bg-blue-600 text-white shadow-md' 
+                : 'text-gray-400 hover:text-white'
+            }`}
+          >
+            <Award className="w-3.5 h-3.5" /> {lang === 'es' ? 'Madurez CMMI' : 'CMMI Maturity'}
+          </button>
+          <button
+            onClick={() => setActiveTab('reports')}
+            className={`flex items-center gap-2 px-4 py-2 text-xs font-semibold rounded-md transition-all ${
+              activeTab === 'reports' 
+                ? 'bg-blue-600 text-white shadow-md' 
+                : 'text-gray-400 hover:text-white'
+            }`}
+          >
+            <FileText className="w-3.5 h-3.5" /> {lang === 'es' ? 'Informes' : 'Reports'}
           </button>
         </nav>
 
@@ -1590,6 +1614,67 @@ export default function App() {
               </div>
             </div>
           </div>
+        )}
+
+        {activeTab === 'maturity' && (
+          <MaturityAssessment
+            lang={lang}
+            user={user}
+            controls={controls}
+            onUpdateControl={async (controlId, payload) => {
+              if (apiOnline) {
+                try {
+                  const res = await fetch(`${API_BASE_URL}/api/controls/${controlId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                  });
+                  if (res.ok) {
+                    const updated = await res.json();
+                    setControls(prev => prev.map(c => {
+                      if (c.id === updated.id) {
+                        return {
+                          ...c,
+                          status: updated.status,
+                          maturity_level: updated.maturity_level,
+                          maturity_justification: lang === 'es' ? updated.maturity_justification : c.maturity_justification,
+                          maturity_justificationEn: lang === 'en' ? updated.maturity_justification : c.maturity_justificationEn,
+                          notes: updated.notes,
+                          last_reviewed: updated.last_reviewed
+                        };
+                      }
+                      return c;
+                    }));
+                  }
+                } catch (err) {
+                  console.error("Failed to update control from CMMI audit", err);
+                }
+              } else {
+                setControls(prev => prev.map(c => {
+                  if (c.id === controlId) {
+                    return {
+                      ...c,
+                      status: payload.status,
+                      maturity_level: payload.maturity_level,
+                      maturity_justification: lang === 'es' ? payload.maturity_justification : c.maturity_justification,
+                      maturity_justificationEn: lang === 'en' ? payload.maturity_justification : c.maturity_justificationEn,
+                      notes: payload.notes || c.notes,
+                      last_reviewed: new Date().toISOString().split('T')[0]
+                    };
+                  }
+                  return c;
+                }));
+              }
+            }}
+          />
+        )}
+
+        {activeTab === 'reports' && (
+          <AuditReport
+            lang={lang}
+            controls={controls}
+            domainMaturity={domainMaturity}
+          />
         )}
       </main>
 

@@ -16,6 +16,7 @@ export interface Control {
   next_due_date: string | null;
   status: 'Compliant' | 'En progreso' | 'En riesgo' | 'Incumplido';
   maturity_level: number;
+  maturity_target: number;
   maturity_justification: string;
   maturity_justificationEn: string;
   notes: string | null;
@@ -793,6 +794,7 @@ export const INITIAL_LOCAL_CONTROLS: Control[] = RAW_CONTROLS.map(c => ({
   next_due_date: c.next_due_date,
   status: c.status as any,
   maturity_level: 1,
+  maturity_target: 3,
   maturity_justification: "Estado inicial — pendiente de primera evaluación",
   maturity_justificationEn: "Initial state — pending first assessment",
   notes: c.notes || null,
