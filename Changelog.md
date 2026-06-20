@@ -8,6 +8,30 @@
 
 ---
 
+## [v1.3.0] — 2026-06-20
+### Added
+- **Módulo de Inteligencia Regulatoria (Fase 3 - D8):** Implementada la pestaña interactiva "Inteligencia D8" en el frontend para monitorear novedades de FSCA y FSC Mauritius.
+- **Detalle y Análisis de Cambios:** Diseñada una pantalla a doble panel en el frontend con soporte para revisar alertas normativas, registrar medidas adoptadas (`action_taken`) y vincular múltiples controles de compliance directamente.
+- **Impacto Dinámico en Controles:** Al vincular un cambio normativo, los controles afectados del Universo Regulatorio se actualizan automáticamente al estado "En riesgo" para requerir re-evaluación.
+- **Monitoreo Automatizado (Backend):** Implementado el script `api/jobs/monitor_d8.py` para consultar/simular cambios legislativos y notificar por correo electrónico real con Resend.
+- **Endpoints de FastAPI:** Expuestas APIs para listar, revisar cambios normativos y gatillar el cron (`/api/cron/monitor-d8`).
+- **Migración de Base de Datos:** Creado el script SQL para la tabla `regulatory_changes` con políticas RLS de seguridad.
+
+---
+
+## [v1.2.0] — 2026-06-19
+### Added
+- **Repositorio de Evidencias (Fase 2):** Creado el nuevo módulo de Evidencias en la UI para listar, filtrar, descargar y subir soporte documental regulatorio por control.
+- **Flujo de Aprobación:** Soporte en backend y frontend para la revisión de evidencias (Aprobada / Rechazada) con registro de notas de auditoría y simulación de alertas de correo en consola.
+- **Simulador de Roles de Desarrollo:** Añadido un selector interactivo de roles en la cabecera del sistema para alternar rápidamente entre Admin (Mauro), Oficial de Compliance y Miembro del Equipo en ambiente de desarrollo local.
+- **Carga Directa desde Control:** Añadido un botón de subida directa de archivos en el Drawer de evaluación de cada control individual, reflejando el histórico de versiones cargadas.
+- **Migración SQL de Evidencias:** Creado el script `20260619000002_create_evidence_files.sql` para la base de datos de Supabase.
+
+### Changed
+- **Dependencias del Proyecto:** Instalación de los paquetes de desarrollo `@types/react` y `@types/react-dom` para solventar problemas de compilación en el compilador de TypeScript.
+
+---
+
 ## [v1.1.0] — 2026-06-19
 ### Added
 - **Universo Regulatorio Agrupado:** Implementada la agrupación de controles por dominio (D1 a D8) en la tabla principal con cabeceras dinámicas y soporte para expandir/colapsar secciones de manera independiente.

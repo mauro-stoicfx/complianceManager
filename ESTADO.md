@@ -12,7 +12,7 @@
 | Ambiente | Versión | Estado |
 |---|---|---|
 | Producción | — | No deployado aún |
-| Desarrollo | v1.1.0 — MVP con agrupaciones colapsables | En curso |
+| Desarrollo | v1.3.0 — Inteligencia y Automatización (Fase 3) | En curso |
 
 ---
 
@@ -34,22 +34,23 @@
 - [x] **Fase 1 MVP:** Estructura de controles, base de datos seed, API FastAPI, Dashboard con radar y Calendario.
 - [x] **Agrupación colapsable (v1.1.0):** Sección expandible/colapsable por dominio (D1-D8) en la tabla del Universo con total de controles y madurez promedio dinámica en cabecera.
 - [x] **Backup automático:** Configuración del repositorio remoto git con Token de Acceso Personal para resguardos desatendidos.
+- [x] **Fase 2 Evidencias (v1.2.0):** Repositorio de documentos en Supabase Storage, flujo de revisión y aprobación (UI + DB), simulador de roles para pruebas de control de acceso.
+- [x] **Fase 3 Inteligencia (v1.3.0):** Monitor D8 automático de cambios normativos, almacenamiento de alertas legislativas, flujo de revisión con impacto directo en el Universo de Controles, y envío de correos reales con Resend.
 
 ---
 
 ## 🔴 Pendiente / En progreso
 
-- [ ] **Fase 2 Evidencias:** Repositorio de documentos + flujo de aprobación (no iniciado).
 - [ ] Stack de Supabase + Vercel: pendiente de deploy en producción.
 - [ ] NotebookLM: documentos aún no subidos por Mauro.
 
 ---
 
-## ⚡ Próximos 3 pasos inmediatos (Instrucciones para Antigravity 2.0)
+## ⚡ Próximos pasos inmediatos (Fase 4)
 
-1. **Diseñar el plan de la Fase 2 (Evidencias)**: Crear `implementation_plan.md` con los detalles técnicos del repositorio de documentos (Storage buckets, base de datos, API, frontend upload) y plantear todas las preguntas de diseño (Open Questions) en el documento para Mauro.
-2. **Realizar entrevista de alineación (`/grill-me`)**: Iniciar una entrevista interactiva con Mauro para responder todas las preguntas del plan de la Fase 2 de una sola vez.
-3. **Ejecutar e integrar de forma autónoma**: Una vez aprobado el plan, codificar backend y frontend, y usar el navegador automatizado para testear visualmente la carga y estado de documentos antes de entregar la fase.
+1. **Maturity Assessment interactivo**: Pantallas dedicadas para auditoría periódica de niveles CMMI.
+2. **Generación de Reportes PDF/Excel**: Exportar reportes del estado actual de compliance y madurez para auditores.
+3. **Deploy final**: Configurar variables de entorno y lanzar producción en Vercel + Supabase.
 
 ---
 
@@ -81,4 +82,4 @@
 
 ---
 
-*Actualizado: 18 de junio de 2026 — fin de sesión de diseño con Perplexity Computer*
+*Actualizado: 19 de junio de 2026 — Progreso Fase 3 (Notificaciones, Alertas y Cron Vercel)*

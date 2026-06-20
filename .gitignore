@@ -42,3 +42,6 @@ Thumbs.db
 *.sw?
 *.zip
 *.log
+
+# Project specific fallbacks
+api/mock_storage/

@@ -4,27 +4,23 @@ import {
   Calendar as CalendarIcon, 
   LayoutDashboard, 
   Database, 
-  Filter, 
-  User, 
   Search, 
   AlertTriangle, 
   CheckCircle2, 
   XCircle, 
-  Clock, 
-  ChevronRight, 
-  Settings, 
   LogOut, 
   BookOpen, 
   ChevronDown,
-  Info,
   Layers,
   Sparkles,
   Sliders,
-  RotateCcw,
-  Globe
+  Globe,
+  Download,
+  UploadCloud
 } from 'lucide-react';
 
 import { Control, INITIAL_LOCAL_CONTROLS } from './controls_data';
+import EvidenceRepository from './components/EvidenceRepository';
 
 interface CalendarEvent {
   control_id: string;
@@ -188,7 +184,7 @@ const TRANSLATIONS = {
 
 export default function App() {
   // Language State
-  const [lang, setLang] = useState<'es' | 'en'>('es');
+  const [lang, setLang] = useState<'es' | 'en'>('en');
   const t = TRANSLATIONS[lang];
 
   // Authentication & Users state
@@ -196,10 +192,16 @@ export default function App() {
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
   const [apiOnline, setApiOnline] = useState(false);
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'universe' | 'calendar'>('dashboard');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'universe' | 'calendar' | 'evidence' | 'intelligence'>('dashboard');
 
   // Core compliance data states
   const [controls, setControls] = useState<Control[]>(INITIAL_LOCAL_CONTROLS);
+  const [evidences, setEvidences] = useState<any[]>([]);
+  const [changes, setChanges] = useState<any[]>([]);
+  const [selectedChange, setSelectedChange] = useState<any | null>(null);
+  const [isScanning, setIsScanning] = useState(false);
+  const [actionTakenText, setActionTakenText] = useState('');
+  const [affectedControlsSelected, setAffectedControlsSelected] = useState<string[]>([]);
   const [events, setEvents] = useState<CalendarEvent[]>([]);
   const [selectedControl, setSelectedControl] = useState<Control | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -233,11 +235,37 @@ export default function App() {
       if (res.ok) {
         setApiOnline(true);
         fetchControlsFromBackend();
+        fetchEvidencesFromBackend();
+        fetchChangesFromBackend();
       } else {
         setApiOnline(false);
       }
     } catch {
       setApiOnline(false);
+    }
+  };
+
+  const fetchEvidencesFromBackend = async () => {
+    try {
+      const res = await fetch('http://localhost:8000/api/evidence');
+      if (res.ok) {
+        const data = await res.json();
+        setEvidences(data);
+      }
+    } catch (err) {
+      console.error("Backend evidences fetch error: ", err);
+    }
+  };
+
+  const fetchChangesFromBackend = async () => {
+    try {
+      const res = await fetch('http://localhost:8000/api/intelligence/changes');
+      if (res.ok) {
+        const data = await res.json();
+        setChanges(data);
+      }
+    } catch (err) {
+      console.error("Backend changes fetch error: ", err);
     }
   };
 
@@ -634,7 +662,7 @@ export default function App() {
             <div className="flex items-center gap-2">
               <span className="font-bold text-lg tracking-tight text-white">{t.title}</span>
               <span className="text-[10px] bg-blue-500/15 text-blue-400 px-2 py-0.5 rounded-full font-bold border border-blue-500/10 uppercase">Compliance</span>
-              <span className="text-[10px] text-gray-500 font-bold ml-1">v1.1.0</span>
+              <span className="text-[10px] text-gray-500 font-bold ml-1">v1.3.0</span>
             </div>
             <p className="text-xs text-gray-400">{t.subTitle}</p>
           </div>
@@ -672,10 +700,56 @@ export default function App() {
           >
             <CalendarIcon className="w-3.5 h-3.5" /> {t.calendar}
           </button>
+          <button
+            onClick={() => setActiveTab('evidence')}
+            className={`flex items-center gap-2 px-4 py-2 text-xs font-semibold rounded-md transition-all ${
+              activeTab === 'evidence' 
+                ? 'bg-blue-600 text-white shadow-md' 
+                : 'text-gray-400 hover:text-white'
+            }`}
+          >
+            <BookOpen className="w-3.5 h-3.5" /> {lang === 'es' ? 'Evidencias' : 'Evidence'}
+          </button>
+          <button
+            onClick={() => setActiveTab('intelligence')}
+            className={`flex items-center gap-2 px-4 py-2 text-xs font-semibold rounded-md transition-all relative ${
+              activeTab === 'intelligence' 
+                ? 'bg-blue-600 text-white shadow-md' 
+                : 'text-gray-400 hover:text-white'
+            }`}
+          >
+            <Sparkles className="w-3.5 h-3.5" /> {lang === 'es' ? 'Inteligencia D8' : 'D8 Intelligence'}
+            {changes.filter(c => c.status === 'Unreviewed').length > 0 && (
+              <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-red-500 rounded-full animate-pulse border border-[#0B0F19]" />
+            )}
+          </button>
         </nav>
 
         {/* User profile dropdown & health state */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
+          {/* Simulated Role Switcher (Development Mode) */}
+          {user && (
+            <div className="flex items-center gap-1.5 bg-[#151D30] border border-amber-500/25 rounded-lg px-2.5 py-1.5 text-xs shadow-md">
+              <Sliders className="w-3.5 h-3.5 text-amber-400" />
+              <select
+                value={user.role}
+                onChange={(e) => {
+                  const r = e.target.value;
+                  setUser({
+                    email: r === 'admin' ? 'mauro@stoicfx.com' : r === 'compliance_officer' ? 'compliance@stoicfx.com' : 'member@stoicfx.com',
+                    full_name: r === 'admin' ? 'Mauro Serrano' : r === 'compliance_officer' ? 'Compliance Officer' : 'Team Member',
+                    role: r
+                  });
+                }}
+                className="bg-transparent border-none text-amber-400 focus:outline-none cursor-pointer font-bold text-xs"
+              >
+                <option value="admin" className="bg-[#151D30] text-white">Rol: Admin</option>
+                <option value="compliance_officer" className="bg-[#151D30] text-white">Rol: Compliance Officer</option>
+                <option value="team_member" className="bg-[#151D30] text-white">Rol: Team Member</option>
+              </select>
+            </div>
+          )}
+
           {/* Language Selector Dropdown */}
           <div className="flex items-center gap-1 bg-[#151D30] border border-gray-800 rounded-lg px-2.5 py-1.5 text-xs shadow">
             <Globe className="w-3.5 h-3.5 text-blue-400" />
@@ -1134,6 +1208,387 @@ export default function App() {
             </div>
           </div>
         )}
+
+        {activeTab === 'evidence' && (
+          <EvidenceRepository 
+            lang={lang}
+            user={user}
+            apiOnline={apiOnline}
+            controls={controls}
+            evidences={evidences}
+            setEvidences={setEvidences}
+            onUpdateControls={fetchControlsFromBackend}
+          />
+        )}
+
+        {activeTab === 'intelligence' && (
+          <div className="space-y-6 animate-fadeIn">
+            {/* Top Stats/Actions Bar */}
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-[#151D30]/80 backdrop-blur border border-gray-800 rounded-xl p-5 shadow-lg">
+              <div>
+                <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                  <Sparkles className="w-5.5 h-5.5 text-blue-400" />
+                  {lang === 'es' ? 'Vigilancia e Inteligencia Normativa (D8)' : 'Regulatory Surveillance & Intelligence (D8)'}
+                </h2>
+                <p className="text-xs text-gray-400 mt-1">
+                  {lang === 'es' 
+                    ? 'Monitoreo automatizado de cambios legislativos en la FSCA (Sudáfrica) y la FSC (Mauritius).' 
+                    : 'Automated monitoring of legislative changes at the FSCA (South Africa) and FSC (Mauritius).'}
+                </p>
+              </div>
+              <button
+                onClick={async () => {
+                  setIsScanning(true);
+                  if (apiOnline) {
+                    try {
+                      const res = await fetch('http://localhost:8000/api/cron/monitor-d8', { method: 'POST' });
+                      if (res.ok) {
+                        await fetchChangesFromBackend();
+                      }
+                    } catch (err) {
+                      console.error("Monitor execution failed:", err);
+                    }
+                  } else {
+                    // Simulate local scan
+                    setTimeout(() => {
+                      const mockChanges = [
+                        {
+                          id: 'mock-1',
+                          title: 'FSCA Board Notice: Amendment of Continuous Professional Development (CPD) Guidelines',
+                          jurisdiction: 'FSCA',
+                          source_url: 'https://www.fsca.co.za/Regulatory%20Frameworks/Pages/Board-Notices.aspx',
+                          summary: 'The FSCA has published an amendment regarding the submission process for CPD hours. FSPs are now required to maintain digital certificates on record for at least 5 years and report via the new online portal by June 15th annually.',
+                          impact_level: 'Medium',
+                          status: 'Unreviewed',
+                          affects_controls: ['D5-F01'],
+                          detected_at: new Date().toISOString(),
+                          created_at: new Date().toISOString(),
+                          updated_at: new Date().toISOString()
+                        },
+                        {
+                          id: 'mock-2',
+                          title: 'FSC Mauritius Circular: New Capital Adequacy Requirements for OTC Derivative Dealers',
+                          jurisdiction: 'FSC Mauritius',
+                          source_url: 'https://www.fscmauritius.org/en/regulatory-framework/circulars',
+                          summary: 'New regulatory directives mandate Investment Dealers (including Full Service Dealers) to maintain an increased minimum unimpaired capital requirement and submit a revised quarterly Capital Adequacy Return starting next quarter.',
+                          impact_level: 'High',
+                          status: 'Unreviewed',
+                          affects_controls: ['D2-M01', 'D6-M01'],
+                          detected_at: new Date().toISOString(),
+                          created_at: new Date().toISOString(),
+                          updated_at: new Date().toISOString()
+                        }
+                      ];
+                      setChanges(prev => {
+                        const existing = new Set(prev.map(c => c.title));
+                        const added = mockChanges.filter(c => !existing.has(c.title));
+                        return [...added, ...prev];
+                      });
+                    }, 1200);
+                  }
+                  setTimeout(() => setIsScanning(false), 1200);
+                }}
+                disabled={isScanning}
+                className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-500 disabled:bg-blue-800/40 text-white text-xs font-bold rounded-lg transition-all shadow-md active:scale-95 animate-pulse"
+              >
+                <Sparkles className={`w-4 h-4 ${isScanning ? 'animate-spin' : ''}`} />
+                {isScanning 
+                  ? (lang === 'es' ? 'Escaneando Sitios...' : 'Scanning Portals...') 
+                  : (lang === 'es' ? 'Ejecutar Monitoreo Normativo' : 'Run Regulatory Scan')}
+              </button>
+            </div>
+
+            {/* Split Screen list & detail */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+              {/* Left Panel: Changes list */}
+              <div className="lg:col-span-5 bg-[#151D30]/80 backdrop-blur border border-gray-800 rounded-xl p-5 shadow-lg space-y-4">
+                <h3 className="text-sm font-bold text-white flex items-center justify-between border-b border-gray-800 pb-3">
+                  <span>{lang === 'es' ? 'Alertas Detectadas' : 'Detected Alerts'}</span>
+                  <span className="bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2 py-0.5 rounded text-[10px] font-bold">
+                    {changes.length} Total
+                  </span>
+                </h3>
+                <div className="space-y-3 max-h-[500px] overflow-y-auto pr-1">
+                  {changes.length === 0 ? (
+                    <div className="text-center py-12 text-gray-400 text-sm">
+                      <Sparkles className="w-8 h-8 text-gray-600 mx-auto mb-2" />
+                      {lang === 'es' ? 'No se han detectado alertas normativas aún. Ejecute un escaneo.' : 'No regulatory alerts detected yet. Run a scan.'}
+                    </div>
+                  ) : (
+                    changes.map(change => {
+                      const isUnreviewed = change.status === 'Unreviewed';
+                      const isHigh = change.impact_level === 'High';
+                      const isMedium = change.impact_level === 'Medium';
+                      
+                      return (
+                        <div
+                          key={change.id}
+                          onClick={() => {
+                            setSelectedChange(change);
+                            setActionTakenText(change.action_taken || '');
+                            setAffectedControlsSelected(change.affects_controls || []);
+                          }}
+                          className={`p-4 rounded-xl border transition-all cursor-pointer relative overflow-hidden ${
+                            selectedChange?.id === change.id
+                              ? 'bg-blue-500/10 border-blue-500 shadow-md animate-pulse'
+                              : 'bg-[#0B0F19]/60 hover:bg-[#0B0F19] border-gray-850'
+                          }`}
+                        >
+                          {/* Top indicator color */}
+                          <div className={`absolute top-0 left-0 w-1.5 h-full ${
+                            isHigh ? 'bg-red-500' : isMedium ? 'bg-amber-500' : 'bg-blue-400'
+                          }`} />
+
+                          <div className="flex items-start justify-between gap-2 pl-2">
+                            <span className="text-[10px] font-bold uppercase tracking-wider text-gray-400 bg-gray-800/80 px-2 py-0.5 rounded">
+                              {change.jurisdiction}
+                            </span>
+                            <div className="flex items-center gap-1.5">
+                              {isUnreviewed && (
+                                <span className="text-[9px] bg-red-500/15 text-red-400 border border-red-500/20 px-1.5 py-0.5 rounded font-bold uppercase animate-pulse">
+                                  {lang === 'es' ? 'Nuevo' : 'New'}
+                                </span>
+                              )}
+                              <span className={`text-[10px] font-bold px-2 py-0.5 rounded ${
+                                isHigh 
+                                  ? 'bg-red-500/10 text-red-400 border border-red-500/10' 
+                                  : isMedium 
+                                    ? 'bg-amber-500/10 text-amber-400 border border-amber-500/10' 
+                                    : 'bg-blue-500/10 text-blue-400 border border-blue-500/10'
+                              }`}>
+                                {change.impact_level}
+                              </span>
+                            </div>
+                          </div>
+
+                          <h4 className="text-sm font-semibold text-white mt-2 pl-2 line-clamp-2">
+                            {change.title}
+                          </h4>
+                          
+                          <p className="text-xs text-gray-400 mt-2 pl-2 line-clamp-2">
+                            {change.summary}
+                          </p>
+
+                          <div className="flex items-center justify-between text-[10px] text-gray-500 mt-3 pl-2 border-t border-gray-850/60 pt-2">
+                            <span>{new Date(change.detected_at).toLocaleDateString()}</span>
+                            <span>{change.status === 'Reviewed' ? (lang === 'es' ? 'Revisado' : 'Reviewed') : (lang === 'es' ? 'Pendiente' : 'Pending')}</span>
+                          </div>
+                        </div>
+                      );
+                    })
+                  )}
+                </div>
+              </div>
+
+              {/* Right Panel: Change Details & Review Form */}
+              <div className="lg:col-span-7 bg-[#151D30]/80 backdrop-blur border border-gray-800 rounded-xl p-6 shadow-lg">
+                {selectedChange ? (
+                  <div className="space-y-5">
+                    <div className="flex items-start justify-between border-b border-gray-800 pb-4">
+                      <div>
+                        <span className="text-xs font-bold text-blue-400 uppercase tracking-widest block mb-1">
+                          {selectedChange.jurisdiction}
+                        </span>
+                        <h3 className="text-lg font-bold text-white">{selectedChange.title}</h3>
+                      </div>
+                      <span className={`text-xs font-bold px-3 py-1 rounded-full ${
+                        selectedChange.impact_level === 'High' 
+                          ? 'bg-red-500/15 text-red-400 border border-red-500/10' 
+                          : selectedChange.impact_level === 'Medium' 
+                            ? 'bg-amber-500/15 text-amber-400 border border-amber-500/10' 
+                            : 'bg-blue-500/15 text-blue-400 border border-blue-500/10'
+                      }`}>
+                        {lang === 'es' ? 'Impacto' : 'Impact'}: {selectedChange.impact_level}
+                      </span>
+                    </div>
+
+                    <div className="space-y-4">
+                      {/* Summary */}
+                      <div>
+                        <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider block mb-1">
+                          {lang === 'es' ? 'Resumen Normativo' : 'Regulatory Summary'}
+                        </span>
+                        <p className="text-sm text-gray-200 leading-relaxed bg-[#0B0F19]/40 p-4 rounded-xl border border-gray-850">
+                          {selectedChange.summary}
+                        </p>
+                      </div>
+
+                      {/* Source URL */}
+                      {selectedChange.source_url && (
+                        <div>
+                          <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider block mb-1">
+                            {lang === 'es' ? 'Enlace Oficial' : 'Official Source Link'}
+                          </span>
+                          <a 
+                            href={selectedChange.source_url} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="text-xs text-blue-400 hover:text-blue-300 font-medium hover:underline break-all inline-flex items-center gap-1 bg-[#0B0F19]/30 px-3 py-2 rounded-lg border border-gray-850"
+                          >
+                            <Globe className="w-3.5 h-3.5" />
+                            {selectedChange.source_url}
+                          </a>
+                        </div>
+                      )}
+
+                      {/* Affected Controls */}
+                      <div>
+                        <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider block mb-1.5">
+                          {lang === 'es' ? 'Controles del Universo Afectados' : 'Affected Regulatory Controls'}
+                        </span>
+                        <div className="flex flex-wrap gap-1.5 mb-2">
+                          {affectedControlsSelected.length === 0 ? (
+                            <span className="text-xs text-gray-500 italic">{lang === 'es' ? 'Ningún control vinculado' : 'No controls linked'}</span>
+                          ) : (
+                            affectedControlsSelected.map(cid => (
+                              <span key={cid} className="text-xs bg-blue-500/15 text-blue-300 border border-blue-500/25 rounded px-2.5 py-1 font-bold">
+                                {cid}
+                              </span>
+                            ))
+                          )}
+                        </div>
+
+                        {selectedChange.status === 'Unreviewed' && user.role !== 'team_member' && (
+                          <div className="grid grid-cols-4 gap-2 mt-2 bg-[#0B0F19]/40 p-3 rounded-xl border border-gray-850 max-h-[140px] overflow-y-auto">
+                            {controls.map(c => {
+                              const isChecked = affectedControlsSelected.includes(c.id);
+                              return (
+                                <button
+                                  key={c.id}
+                                  type="button"
+                                  onClick={() => {
+                                    if (isChecked) {
+                                      setAffectedControlsSelected(prev => prev.filter(id => id !== c.id));
+                                    } else {
+                                      setAffectedControlsSelected(prev => [...prev, c.id]);
+                                    }
+                                  }}
+                                  className={`px-2 py-1.5 text-left text-xs font-bold rounded-lg border transition-all truncate ${
+                                    isChecked
+                                      ? 'bg-blue-600/20 border-blue-500 text-blue-300'
+                                      : 'bg-[#0B0F19] border-gray-800 text-gray-400 hover:text-white'
+                                  }`}
+                                  title={lang === 'es' ? c.description : c.descriptionEn}
+                                >
+                                  {c.id}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Action Taken */}
+                      <div>
+                        <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider block mb-1">
+                          {lang === 'es' ? 'Acciones a tomar / Impacto en Stoic FX' : 'Actions Taken / Impact on Stoic FX'}
+                        </span>
+                        {selectedChange.status === 'Reviewed' ? (
+                          <p className="text-sm text-gray-300 bg-[#0B0F19]/40 p-4 rounded-xl border border-gray-850 italic">
+                            {selectedChange.action_taken}
+                          </p>
+                        ) : (
+                          user.role === 'team_member' ? (
+                            <span className="text-xs text-gray-500 italic">
+                              {lang === 'es' ? 'Requiere rol Administrador o Compliance Officer para redactar medidas.' : 'Requires Admin or Compliance Officer role to outline action taken.'}
+                            </span>
+                          ) : (
+                            <textarea
+                              rows={3}
+                              placeholder={lang === 'es' ? 'Ej: Se requiere actualizar la política de CPD (D5-F01) y solicitar reporte a los KIs...' : 'e.g., Update CPD policy (D5-F01) and request certification from KIs...'}
+                              value={actionTakenText}
+                              onChange={(e) => setActionTakenText(e.target.value)}
+                              className="w-full bg-[#0B0F19] border border-gray-800 focus:border-blue-500 focus:outline-none rounded-xl p-3 text-sm text-white transition-colors"
+                            />
+                          )
+                        )}
+                      </div>
+
+                      {/* Submit review */}
+                      {selectedChange.status === 'Unreviewed' && user.role !== 'team_member' && (
+                        <button
+                          onClick={async () => {
+                            const payload = {
+                              action_taken: actionTakenText || 'Revisado y analizado por el oficial de cumplimiento.',
+                              affects_controls: affectedControlsSelected
+                            };
+                            
+                            if (apiOnline) {
+                              try {
+                                const res = await fetch(`http://localhost:8000/api/intelligence/changes/${selectedChange.id}/review`, {
+                                  method: 'PUT',
+                                  headers: { 
+                                    'Content-Type': 'application/json',
+                                    'X-Simulated-Role': user.role,
+                                    'X-Simulated-User': user.email
+                                  },
+                                  body: JSON.stringify(payload)
+                                });
+                                if (res.ok) {
+                                  const updated = await res.json();
+                                  setChanges(prev => prev.map(c => c.id === updated.id ? updated : c));
+                                  setSelectedChange(updated);
+                                  // Update affected controls status local sync
+                                  fetchControlsFromBackend();
+                                }
+                              } catch (err) {
+                                console.error("Failed to submit review:", err);
+                              }
+                            } else {
+                              // Local sync
+                              setChanges(prev => prev.map(c => {
+                                if (c.id === selectedChange.id) {
+                                  return {
+                                    ...c,
+                                    status: 'Reviewed',
+                                    action_taken: payload.action_taken,
+                                    affects_controls: payload.affects_controls,
+                                    updated_at: new Date().toISOString()
+                                  };
+                                }
+                                return c;
+                              }));
+                              
+                              // Change status of local controls
+                              if (payload.affects_controls.length > 0) {
+                                setControls(prev => prev.map(ctrl => {
+                                  if (payload.affects_controls.includes(ctrl.id)) {
+                                    return {
+                                      ...ctrl,
+                                      status: 'En riesgo',
+                                      notes: `Afectado por cambio regulatorio: ${selectedChange.title}. Requiere revisión.`
+                                    };
+                                  }
+                                  return ctrl;
+                                }));
+                              }
+                              
+                              setSelectedChange((prev: any) => ({
+                                ...prev,
+                                status: 'Reviewed',
+                                action_taken: payload.action_taken,
+                                affects_controls: payload.affects_controls,
+                                updated_at: new Date().toISOString()
+                              }));
+                            }
+                          }}
+                          className="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl transition-all shadow-md active:scale-95"
+                        >
+                          {lang === 'es' ? 'Marcar como Revisado y Aplicar a Controles' : 'Mark as Reviewed & Link to Controls'}
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center justify-center py-24 text-gray-500 italic">
+                    <Sparkles className="w-12 h-12 text-gray-600 mb-3" />
+                    {lang === 'es' ? 'Seleccione una alerta de la lista para ver su detalle y realizar el análisis' : 'Select an alert from the list to view details and perform analysis'}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
       </main>
 
       {/* ASSESSMENT DRAWER / SIDEBAR (SLIDES FROM RIGHT) */}
@@ -1243,6 +1698,135 @@ export default function App() {
                   rows={3}
                   className="w-full bg-[#0B0F19] border border-gray-850 focus:border-blue-500 rounded-lg p-3 text-xs text-white focus:outline-none transition-colors"
                 />
+              </div>
+
+              {/* Evidence Documents List */}
+              <div className="space-y-3 pt-4 border-t border-gray-850">
+                <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider">
+                  {lang === 'es' ? 'Evidencias del Control' : 'Control Evidence Files'}
+                </label>
+                
+                {/* Evidences list */}
+                <div className="space-y-2">
+                  {evidences.filter(ev => ev.control_id === selectedControl.id).length === 0 ? (
+                    <p className="text-xs text-gray-500 italic">
+                      {lang === 'es' ? 'No hay evidencias cargadas para este control.' : 'No evidence uploaded for this control.'}
+                    </p>
+                  ) : (
+                    evidences.filter(ev => ev.control_id === selectedControl.id).map(ev => {
+                      const statusColors: Record<string, string> = {
+                        Pending: 'text-amber-400 bg-amber-500/10 border border-amber-500/20',
+                        Approved: 'text-emerald-400 bg-emerald-500/10 border border-emerald-500/20',
+                        Rejected: 'text-red-400 bg-red-500/10 border border-red-500/20',
+                      };
+                      return (
+                        <div key={ev.id} className="flex items-center justify-between p-2.5 bg-[#0B0F19] border border-gray-850 rounded-lg text-xs">
+                          <div className="flex flex-col truncate max-w-[70%]">
+                            <span className="text-white font-semibold truncate" title={ev.file_name}>{ev.file_name}</span>
+                            <span className="text-[10px] text-gray-550 block mt-0.5">
+                              {new Date(ev.created_at).toLocaleDateString()} · {ev.uploaded_by_name}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-1.5">
+                            <span className={`px-2 py-0.5 rounded text-[8px] font-extrabold uppercase ${statusColors[ev.status] || ''}`}>
+                              {lang === 'es' ? (ev.status === 'Pending' ? 'Pendiente' : ev.status === 'Approved' ? 'Aprobada' : 'Rechazada') : ev.status}
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                if (apiOnline) {
+                                  window.open(`http://localhost:8000/api/evidence/download/${ev.id}`, '_blank');
+                                } else {
+                                  alert(lang === 'es' ? 'Descarga simulada en modo local.' : 'Simulated download in local mode.');
+                                }
+                              }}
+                              className="p-1 text-gray-400 hover:text-white"
+                              title="Download"
+                            >
+                              <Download className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    })
+                  )}
+                </div>
+
+                {/* Inline upload input */}
+                <div className="bg-[#0B0F19]/40 border border-gray-850/60 rounded-xl p-3 space-y-2 mt-2">
+                  <span className="text-[10px] font-bold text-gray-450 block">
+                    {lang === 'es' ? 'Cargar Nueva Evidencia' : 'Upload New Evidence'}
+                  </span>
+                  <div className="flex gap-2">
+                    <input
+                      type="file"
+                      id="drawer-file-upload"
+                      className="hidden"
+                      onChange={async (e) => {
+                        if (e.target.files && e.target.files[0]) {
+                          const file = e.target.files[0];
+                          const formData = new FormData();
+                          formData.append('control_id', selectedControl.id);
+                          formData.append('file', file);
+                          
+                          const headers: Record<string, string> = {};
+                          if (user) {
+                            headers['X-Simulated-Role'] = user.role;
+                            headers['X-Simulated-User'] = user.email;
+                          }
+
+                          if (apiOnline) {
+                            try {
+                              const res = await fetch('http://localhost:8000/api/evidence/upload', {
+                                method: 'POST',
+                                headers: headers,
+                                body: formData
+                              });
+                              if (res.ok) {
+                                fetchEvidencesFromBackend();
+                                fetchControlsFromBackend();
+                              } else {
+                                const err = await res.json();
+                                alert(`Error: ${err.detail}`);
+                              }
+                            } catch (err) {
+                              console.error(err);
+                            }
+                          } else {
+                            // Local mock
+                            const fileId = Math.random().toString(36).substring(2, 9);
+                            const mockEv = {
+                              id: fileId,
+                              control_id: selectedControl.id,
+                              file_name: file.name,
+                              file_path: `mock_storage/${file.name}`,
+                              uploaded_by: user?.email || 'mauro@stoicfx.com',
+                              uploaded_by_name: user?.full_name || 'Mauro Serrano',
+                              approved_by: null,
+                              approved_by_name: null,
+                              status: 'Pending',
+                              validity_date: null,
+                              notes: 'Direct drawer upload',
+                              created_at: new Date().toISOString(),
+                              updated_at: new Date().toISOString()
+                            };
+                            setEvidences(prev => [mockEv, ...prev]);
+                            selectedControl.status = 'En progreso';
+                            selectedControl.evidence_file_path = mockEv.file_path;
+                            setEditStatus('En progreso');
+                          }
+                        }
+                      }}
+                    />
+                    <label
+                      htmlFor="drawer-file-upload"
+                      className="flex-1 bg-[#0B0F19] hover:bg-gray-800 border border-gray-800 text-gray-400 hover:text-white rounded-lg py-2 text-center text-xs font-semibold cursor-pointer transition-all flex items-center justify-center gap-1.5"
+                    >
+                      <UploadCloud className="w-3.5 h-3.5" />
+                      {lang === 'es' ? 'Seleccionar archivo' : 'Select file'}
+                    </label>
+                  </div>
+                </div>
               </div>
 
               {/* Notes */}
