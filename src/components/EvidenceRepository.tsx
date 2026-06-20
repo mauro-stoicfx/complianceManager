@@ -15,6 +15,8 @@ import {
 } from 'lucide-react';
 import { Control } from '../controls_data';
 
+const API_BASE_URL = window.location.hostname === 'localhost' ? 'http://localhost:8000' : '';
+
 interface EvidenceFile {
   id: string;
   control_id: string;
@@ -73,7 +75,7 @@ export default function EvidenceRepository({
     setLoading(true);
     if (apiOnline) {
       try {
-        const res = await fetch('http://localhost:8000/api/evidence');
+        const res = await fetch(`${API_BASE_URL}/api/evidence`);
         if (res.ok) {
           const data = await res.json();
           setEvidences(data);
@@ -122,7 +124,7 @@ export default function EvidenceRepository({
 
     if (apiOnline) {
       try {
-        const res = await fetch('http://localhost:8000/api/evidence/upload', {
+        const res = await fetch(`${API_BASE_URL}/api/evidence/upload`, {
           method: 'POST',
           headers: headers,
           body: formData
@@ -200,7 +202,7 @@ export default function EvidenceRepository({
 
     if (apiOnline) {
       try {
-        const res = await fetch(`http://localhost:8000/api/evidence/${reviewingEvidence.id}/review`, {
+        const res = await fetch(`${API_BASE_URL}/api/evidence/${reviewingEvidence.id}/review`, {
           method: 'PUT',
           headers: headers,
           body: JSON.stringify({
@@ -261,7 +263,7 @@ export default function EvidenceRepository({
 
   const handleDownload = (ev: EvidenceFile) => {
     if (apiOnline) {
-      window.open(`http://localhost:8000/api/evidence/download/${ev.id}`, '_blank');
+      window.open(`${API_BASE_URL}/api/evidence/download/${ev.id}`, '_blank');
     } else {
       alert(isSpanish 
         ? `Modo Local: Descargando archivo simulado "${ev.file_name}"\n(Para descargas reales, inicia el backend FastAPI)` 
