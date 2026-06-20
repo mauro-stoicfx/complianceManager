@@ -8,6 +8,13 @@
 
 ---
 
+## [v1.4.5] — 2026-06-20
+### Fixed
+- **Dependencia de Carga de Archivos (python-multipart):** Añadido `python-multipart` a [requirements.txt](file:///c:/Users/mauro/OneDrive/S/STOICFX/Compliance%20Project/StoicFX%20Compliance%20Manager/api/requirements.txt). Esto resuelve el error en tiempo de ejecución (`RuntimeError: Form data requires "python-multipart" to be installed`) gatillado por FastAPI al compilar la ruta de subida de evidencias en el entorno serverless de Vercel.
+- **Incremento de Versión Semántica:** Bump de la versión a `1.4.5` en [package.json](file:///c:/Users/mauro/OneDrive/S/STOICFX/Compliance%20Project/StoicFX%20Compliance%20Manager/package.json), [App.tsx](file:///c:/Users/mauro/OneDrive/S/STOICFX/Compliance%20Project/StoicFX%20Compliance%20Manager/src/App.tsx) y [ESTADO.md](file:///c:/Users/mauro/OneDrive/S/STOICFX/Compliance%20Project/StoicFX%20Compliance%20Manager/ESTADO.md).
+
+---
+
 ## [v1.4.4] — 2026-06-20
 ### Fixed
 - **Manejo de Sistema de Archivos de Solo Lectura en Vercel:** Reubicada la constante `MOCK_STORAGE_DIR` a `/tmp/mock_storage` (única ruta con permisos de escritura en Vercel functions). Adicionalmente, se envolvió `os.makedirs` en un bloque `try/except OSError` para evitar el crash del backend en caso de fallo, protegiendo las llamadas del fallback local en los endpoints de subida y descarga de evidencias en [main.py](file:///c:/Users/mauro/OneDrive/S/STOICFX/Compliance%20Project/StoicFX%20Compliance%20Manager/api/main.py).

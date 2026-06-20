@@ -674,7 +674,7 @@ export default function App() {
             <div className="flex items-center gap-2">
               <span className="font-bold text-lg tracking-tight text-white">{t.title}</span>
               <span className="text-[10px] bg-blue-500/15 text-blue-400 px-2 py-0.5 rounded-full font-bold border border-blue-500/10 uppercase">Compliance</span>
-              <span className="text-[10px] text-gray-500 font-bold ml-1">v1.4.4</span>
+              <span className="text-[10px] text-gray-500 font-bold ml-1">v1.4.5</span>
             </div>
             <p className="text-xs text-gray-400">{t.subTitle}</p>
           </div>

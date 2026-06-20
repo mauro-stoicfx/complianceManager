@@ -11,8 +11,8 @@
 
 | Ambiente | Versión | Estado |
 |---|---|---|
-| Producción | v1.4.4 — Solución de Directorio Temporal en Solo Lectura | ✅ Deployado |
-| Desarrollo | v1.4.4 — Solución de Directorio Temporal en Solo Lectura | ✅ Completado |
+| Producción | v1.4.5 — Librería de Carga de Formularios python-multipart | ✅ Deployado |
+| Desarrollo | v1.4.5 — Librería de Carga de Formularios python-multipart | ✅ Completado |
 
 ---
 
