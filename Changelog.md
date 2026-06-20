@@ -8,6 +8,13 @@
 
 ---
 
+## [v1.4.2] — 2026-06-20
+### Fixed
+- **Dependencias de Producción en Backend (requirements.txt):** Creado el archivo [requirements.txt](file:///c:/Users/mauro/OneDrive/S/STOICFX/Compliance%20Project/StoicFX%20Compliance%20Manager/api/requirements.txt) en la carpeta `api` con las dependencias requeridas (`fastapi`, `supabase`, `resend`, `python-dotenv`, `pydantic`, `uvicorn`). Esto soluciona el error 500 (FUNCTION_INVOCATION_FAILED) en Vercel originado por la falta de paquetes de Python en producción.
+- **Incremento de Versión Semántica:** Bump de la versión a `1.4.2` en [package.json](file:///c:/Users/mauro/OneDrive/S/STOICFX/Compliance%20Project/StoicFX%20Compliance%20Manager/package.json), [App.tsx](file:///c:/Users/mauro/OneDrive/S/STOICFX/Compliance%20Project/StoicFX%20Compliance%20Manager/src/App.tsx) y [ESTADO.md](file:///c:/Users/mauro/OneDrive/S/STOICFX/Compliance%20Project/StoicFX%20Compliance%20Manager/ESTADO.md).
+
+---
+
 ## [v1.4.1] — 2026-06-20
 ### Fixed
 - **Enrutamiento de Monitoreo de Salud de la API en Producción:** Corregida la ruta de salud de `/health` a `/api/health` en el frontend y en la API del backend ([main.py](file:///c:/Users/mauro/OneDrive/S/STOICFX/Compliance%20Project/StoicFX%20Compliance%20Manager/api/main.py) y [App.tsx](file:///c:/Users/mauro/OneDrive/S/STOICFX/Compliance%20Project/StoicFX%20Compliance%20Manager/src/App.tsx)) para que Vercel enrute las peticiones correctamente a las funciones de servidor y el sitio salga de "Local Mode (In-memory)" en producción.

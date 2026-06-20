@@ -11,8 +11,8 @@
 
 | Ambiente | Versión | Estado |
 |---|---|---|
-| Producción | v1.4.1 — Conectividad de API y Almacenamiento | ✅ Deployado |
-| Desarrollo | v1.4.1 — Conectividad de API y Almacenamiento | ✅ Completado |
+| Producción | v1.4.2 — Dependencias y Despliegue en Vercel | ✅ Deployado |
+| Desarrollo | v1.4.2 — Dependencias y Despliegue en Vercel | ✅ Completado |
 
 ---
 
