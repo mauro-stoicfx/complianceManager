@@ -1,4 +1,5 @@
 import os
+import sys
 import uuid
 from datetime import datetime, date, timedelta
 from typing import List, Optional
@@ -7,6 +8,14 @@ from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from supabase import create_client, Client
+
+# Add parent directory to sys.path to ensure 'from api.controls_data import ...' resolves under Vercel
+parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if parent_dir not in sys.path:
+    sys.path.insert(0, parent_dir)
+current_dir = os.path.dirname(os.path.abspath(__file__))
+if current_dir not in sys.path:
+    sys.path.insert(0, current_dir)
 
 # Load environment variables from .env.local for local development fallback
 try:

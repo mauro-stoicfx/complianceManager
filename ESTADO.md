@@ -11,8 +11,8 @@
 
 | Ambiente | Versión | Estado |
 |---|---|---|
-| Producción | v1.4.2 — Dependencias y Despliegue en Vercel | ✅ Deployado |
-| Desarrollo | v1.4.2 — Dependencias y Despliegue en Vercel | ✅ Completado |
+| Producción | v1.4.3 — Corrección de Rutas de Importación en Vercel | ✅ Deployado |
+| Desarrollo | v1.4.3 — Corrección de Rutas de Importación en Vercel | ✅ Completado |
 
 ---
 
