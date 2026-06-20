@@ -22,6 +22,8 @@ import {
 import { Control, INITIAL_LOCAL_CONTROLS } from './controls_data';
 import EvidenceRepository from './components/EvidenceRepository';
 
+const API_BASE_URL = window.location.hostname === 'localhost' ? 'http://localhost:8000' : '';
+
 interface CalendarEvent {
   control_id: string;
   description: string;
@@ -231,7 +233,7 @@ export default function App() {
   // Fetch from backend API if online
   const checkBackendHealth = async () => {
     try {
-      const res = await fetch('http://localhost:8000/health');
+      const res = await fetch(`${API_BASE_URL}/health`);
       if (res.ok) {
         setApiOnline(true);
         fetchControlsFromBackend();
@@ -247,7 +249,7 @@ export default function App() {
 
   const fetchEvidencesFromBackend = async () => {
     try {
-      const res = await fetch('http://localhost:8000/api/evidence');
+      const res = await fetch(`${API_BASE_URL}/api/evidence`);
       if (res.ok) {
         const data = await res.json();
         setEvidences(data);
@@ -259,7 +261,7 @@ export default function App() {
 
   const fetchChangesFromBackend = async () => {
     try {
-      const res = await fetch('http://localhost:8000/api/intelligence/changes');
+      const res = await fetch(`${API_BASE_URL}/api/intelligence/changes`);
       if (res.ok) {
         const data = await res.json();
         setChanges(data);
@@ -271,7 +273,7 @@ export default function App() {
 
   const fetchControlsFromBackend = async () => {
     try {
-      const res = await fetch('http://localhost:8000/api/controls');
+      const res = await fetch(`${API_BASE_URL}/api/controls`);
       if (res.ok) {
         const data = await res.json();
         // Backend maps directly, we sync
@@ -391,7 +393,7 @@ export default function App() {
 
     if (apiOnline) {
       try {
-        const res = await fetch(`http://localhost:8000/api/controls/${selectedControl.id}`, {
+        const res = await fetch(`${API_BASE_URL}/api/controls/${selectedControl.id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
@@ -1241,7 +1243,7 @@ export default function App() {
                   setIsScanning(true);
                   if (apiOnline) {
                     try {
-                      const res = await fetch('http://localhost:8000/api/cron/monitor-d8', { method: 'POST' });
+                      const res = await fetch(`${API_BASE_URL}/api/cron/monitor-d8`, { method: 'POST' });
                       if (res.ok) {
                         await fetchChangesFromBackend();
                       }
@@ -1515,7 +1517,7 @@ export default function App() {
                             
                             if (apiOnline) {
                               try {
-                                const res = await fetch(`http://localhost:8000/api/intelligence/changes/${selectedChange.id}/review`, {
+                                const res = await fetch(`${API_BASE_URL}/api/intelligence/changes/${selectedChange.id}/review`, {
                                   method: 'PUT',
                                   headers: { 
                                     'Content-Type': 'application/json',
@@ -1735,7 +1737,7 @@ export default function App() {
                               type="button"
                               onClick={() => {
                                 if (apiOnline) {
-                                  window.open(`http://localhost:8000/api/evidence/download/${ev.id}`, '_blank');
+                                  window.open(`${API_BASE_URL}/api/evidence/download/${ev.id}`, '_blank');
                                 } else {
                                   alert(lang === 'es' ? 'Descarga simulada en modo local.' : 'Simulated download in local mode.');
                                 }
@@ -1777,7 +1779,7 @@ export default function App() {
 
                           if (apiOnline) {
                             try {
-                              const res = await fetch('http://localhost:8000/api/evidence/upload', {
+                              const res = await fetch(`${API_BASE_URL}/api/evidence/upload`, {
                                 method: 'POST',
                                 headers: headers,
                                 body: formData

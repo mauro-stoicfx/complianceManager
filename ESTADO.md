@@ -12,7 +12,7 @@
 | Ambiente | Versión | Estado |
 |---|---|---|
 | Producción | — | No deployado aún |
-| Desarrollo | v1.3.0 — Inteligencia y Automatización (Fase 3) | En curso |
+| Desarrollo | v1.3.0 — Inteligencia y Automatización (Fase 3) | ✅ Completado |
 
 ---
 
@@ -29,36 +29,38 @@
 - [x] Dominio D9 (Expansion Readiness) definido conceptualmente
 - [x] Prompt para Antigravity v3.0 preparado
 - [x] Todos los archivos MD del proyecto creados y estructurados
-- [x] 6 documentos regulatorios oficiales descargados (FAIS Act, BN194, Securities Act, Financial Services Act, FIAMLA Regs, SEM Capital Rules)
+- [x] 6 documentos regulatorios oficiales descargados (FAIS Act, BN194, Securities Act, Financial Services Act, FIAMLA Regs, SEM Capital Rules) + 3 documentos FSC adicionales descargados manualmente
 - [x] Arquitectura de archivos MD estandarizada (ARQUITECTURA_MD.md)
-- [x] **Fase 1 MVP:** Estructura de controles, base de datos seed, API FastAPI, Dashboard con radar y Calendario.
-- [x] **Agrupación colapsable (v1.1.0):** Sección expandible/colapsable por dominio (D1-D8) en la tabla del Universo con total de controles y madurez promedio dinámica en cabecera.
-- [x] **Backup automático:** Configuración del repositorio remoto git con Token de Acceso Personal para resguardos desatendidos.
-- [x] **Fase 2 Evidencias (v1.2.0):** Repositorio de documentos en Supabase Storage, flujo de revisión y aprobación (UI + DB), simulador de roles para pruebas de control de acceso.
-- [x] **Fase 3 Inteligencia (v1.3.0):** Monitor D8 automático de cambios normativos, almacenamiento de alertas legislativas, flujo de revisión con impacto directo en el Universo de Controles, y envío de correos reales con Resend.
+- [x] **NotebookLM configurado:** 3 notebooks creados con URLs reales registradas en RULES.md
+  - RegulacionNotebook: https://notebooklm.google.com/notebook/fbd867e6-0516-4f48-9033-f1460cac3758
+  - MetodologiaNotebook: https://notebooklm.google.com/notebook/c6bfaec3-3746-4e76-9989-12cd120b663a
+  - BrokerstiersNotebook: https://notebooklm.google.com/notebook/bf129b3f-4466-4e73-9a60-170323c47059
+- [x] **Fase 1 MVP (v1.0.0):** Estructura de controles, base de datos seed, API FastAPI, Dashboard con radar y Calendario
+- [x] **Agrupación colapsable (v1.1.0):** Sección expandible/colapsable por dominio (D1–D8) con total de controles y madurez promedio dinámica
+- [x] **Backup automático:** Repositorio remoto Git con PAT configurado
+- [x] **Fase 2 Evidencias (v1.2.0):** Repositorio de documentos en Supabase Storage, flujo de revisión y aprobación, simulador de roles
+- [x] **Fase 3 Inteligencia (v1.3.0):** Monitor D8 automático de cambios normativos, alertas legislativas, impacto directo en Universo de Controles, envío de correos reales con Resend
 
 ---
 
 ## 🔴 Pendiente / En progreso
 
-- [ ] Stack de Supabase + Vercel: pendiente de deploy en producción.
-- [ ] NotebookLM: documentos aún no subidos por Mauro.
+- [ ] Stack de Supabase + Vercel: pendiente de deploy en producción
+- [ ] Supabase Storage real: evidencias aún en modo mock_storage local — pendiente conectar bucket real
 
 ---
 
 ## ⚡ Próximos pasos inmediatos (Fase 4)
 
-1. **Maturity Assessment interactivo**: Pantallas dedicadas para auditoría periódica de niveles CMMI.
-2. **Generación de Reportes PDF/Excel**: Exportar reportes del estado actual de compliance y madurez para auditores.
-3. **Deploy final**: Configurar variables de entorno y lanzar producción en Vercel + Supabase.
+1. **Maturity Assessment interactivo** — pantallas dedicadas para auditoría periódica de niveles CMMI, heatmap current vs. target, plan de acción automático para controles en nivel 0 o 1 de dominios críticos
+2. **Generación de Reportes PDF/Excel** — exportar reportes del estado actual de compliance y madurez para auditores
+3. **Deploy final** — configurar variables de entorno y lanzar producción en Vercel + conectar Supabase Storage real
 
 ---
 
 ## 🚧 Blockers activos
 
-| Blocker | Descripción | Responsable |
-|---|---|---|
-| NotebookLM no configurado | Los documentos regulatorios no están subidos aún. El MCP de NotebookLM no puede usarse hasta que estén indexados. | Mauro |
+Ninguno activo al 19 de junio de 2026.
 
 ---
 
@@ -68,18 +70,20 @@
 |---|---|---|
 | `stoicfx_compliance_project.md` | Brief técnico completo para Antigravity | ✅ Listo v3.0 |
 | `ObjetivoyGuia.md` | Norte del proyecto | ✅ Listo |
-| `RULES.md` | Reglas operativas para Antigravity | ✅ Listo |
+| `RULES.md` | Reglas operativas para Antigravity (incluye URLs de notebooks) | ✅ Listo |
 | `ESTADO.md` | Este archivo | ✅ Listo |
-| `Memoria.md` | Decisiones técnicas | ✅ Seed inicial listo |
-| `Contexto.md` | Conocimiento del dominio | ✅ Seed inicial listo |
-| `Changelog.md` | Historial de versiones | ✅ Listo |
-| `OportunidadesDeMejora.md` | Backlog futuro | ✅ Listo |
+| `Memoria.md` | Decisiones técnicas | ✅ Listo |
+| `Contexto.md` | Conocimiento del dominio | ✅ Listo |
+| `Changelog.md` | Historial de versiones | ✅ Listo v1.3.0 |
+| `OportunidadesDeMejora.md` | Backlog futuro (12 ítems) | ✅ Listo |
 | `BROKERSTIER.md` | Benchmark competitivo | ✅ Listo |
-| `WORTHITORNOT.md` | Análisis de viabilidad | ✅ Listo |
+| `WORTHITORNOT.md` | Beneficios del sistema | ✅ Listo (reescrito 19-jun) |
 | `ARQUITECTURA_MD.md` | Guía de arquitectura MD | ✅ Listo |
+| `SesionDiagnostico.md` | Guía para sesión de diagnóstico con el equipo antes de presentar a Mike | ✅ Listo |
 | `RegulacionNotebook.md` | Fuentes para NotebookLM — regulación | ✅ Listo |
 | `BrokerstiersNotebook.md` | Fuentes para NotebookLM — benchmark | ✅ Listo |
+| `MetodologiaNotebook.md` | Fuentes para NotebookLM — metodología CMMI/ISO/COBIT | ✅ Listo |
 
 ---
 
-*Actualizado: 19 de junio de 2026 — Progreso Fase 3 (Notificaciones, Alertas y Cron Vercel)*
+*Actualizado: 19 de junio de 2026 — fin de Fase 3 con Perplexity Computer + Antigravity*
