@@ -442,7 +442,7 @@ def download_evidence(evidence_id: str):
         
     return FileResponse(file_path, media_type="application/octet-stream", filename=evidence["file_name"])
 
-@app.get("/health")
+@app.get("/api/health")
 def health_check():
     return {"status": "ok", "mode": "supabase" if supabase_client else "in_memory"}
 

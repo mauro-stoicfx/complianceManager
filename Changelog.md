@@ -8,6 +8,13 @@
 
 ---
 
+## [v1.4.1] — 2026-06-20
+### Fixed
+- **Enrutamiento de Monitoreo de Salud de la API en Producción:** Corregida la ruta de salud de `/health` a `/api/health` en el frontend y en la API del backend ([main.py](file:///c:/Users/mauro/OneDrive/S/STOICFX/Compliance%20Project/StoicFX%20Compliance%20Manager/api/main.py) y [App.tsx](file:///c:/Users/mauro/OneDrive/S/STOICFX/Compliance%20Project/StoicFX%20Compliance%20Manager/src/App.tsx)) para que Vercel enrute las peticiones correctamente a las funciones de servidor y el sitio salga de "Local Mode (In-memory)" en producción.
+- **Incremento de Versión Operativa:** Elevado el número de versión a `1.4.1` en [package.json](file:///c:/Users/mauro/OneDrive/S/STOICFX/Compliance%20Project/StoicFX%20Compliance%20Manager/package.json), [App.tsx](file:///c:/Users/mauro/OneDrive/S/STOICFX/Compliance%20Project/StoicFX%20Compliance%20Manager/src/App.tsx) y en la visualización del sitio para garantizar versionamiento semántico progresivo.
+
+---
+
 ## [v1.4.0] — 2026-06-20
 ### Added
 - **Evaluación de Madurez CMMI (Fase 4):** Creada la nueva pestaña "Madurez CMMI" interactiva que despliega un heatmap de distribución de madurez (niveles 0-5) sobre los 8 dominios de control regulados.

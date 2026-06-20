@@ -243,7 +243,7 @@ export default function App() {
   // Fetch from backend API if online
   const checkBackendHealth = async () => {
     try {
-      const res = await fetch(`${API_BASE_URL}/health`);
+      const res = await fetch(`${API_BASE_URL}/api/health`);
       if (res.ok) {
         setApiOnline(true);
         fetchControlsFromBackend();
@@ -674,7 +674,7 @@ export default function App() {
             <div className="flex items-center gap-2">
               <span className="font-bold text-lg tracking-tight text-white">{t.title}</span>
               <span className="text-[10px] bg-blue-500/15 text-blue-400 px-2 py-0.5 rounded-full font-bold border border-blue-500/10 uppercase">Compliance</span>
-              <span className="text-[10px] text-gray-500 font-bold ml-1">v1.4.0</span>
+              <span className="text-[10px] text-gray-500 font-bold ml-1">v1.4.1</span>
             </div>
             <p className="text-xs text-gray-400">{t.subTitle}</p>
           </div>

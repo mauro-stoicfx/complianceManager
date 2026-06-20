@@ -11,8 +11,8 @@
 
 | Ambiente | Versión | Estado |
 |---|---|---|
-| Producción | v1.4.0 — Madurez y Reportes (Fase 4) | ✅ Deployado |
-| Desarrollo | v1.4.0 — Madurez y Reportes (Fase 4) | ✅ Completado |
+| Producción | v1.4.1 — Conectividad de API y Almacenamiento | ✅ Deployado |
+| Desarrollo | v1.4.1 — Conectividad de API y Almacenamiento | ✅ Completado |
 
 ---
 
